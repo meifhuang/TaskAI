@@ -3,11 +3,15 @@ import './App.css';
 import './styles.css'; 
 import InputField from "./components/InputField"
 import ToDoList from "./components/ToDoList"
+import VirtualAssistant from "./components/VirtualAssistant"
 import {Todo} from "./model"; 
+
+
 
 const App: React.FC = () => {
   const [todo, setTodo] = useState<string> ("");
   const [todos, setTodos] = useState<Todo[]>([]); 
+
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,9 +23,10 @@ const App: React.FC = () => {
   
   return (
     <div className="App">
-      <span className="heading"> Taskify </span>
-      <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd}/>
+      <h1 className="heading"> TaskAI </h1>
+      {/* <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd}/> */}
       <ToDoList todos={todos} setTodos={setTodos}/>
+      <VirtualAssistant/>
     </div>
   );
 }
