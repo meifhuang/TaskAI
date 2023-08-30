@@ -11,24 +11,12 @@ const VirtualAssistant: React.FC= () => {
       command: 'reset',
       callback: () => {
         resetTranscript()
-        setMessage('you may restart your command')
+        setMessage('you may restate your command')
       } 
     },
     {
       command: ['hello', 'hi', 'hey'],
       callback: () => setMessage('hello there')
-    },
-    {
-      command: ['add * to my list'], 
-      callback: (command:string) => {
-        console.log(command)
-        setTodo(command)
-        setTodos((prev) => [...prev, {id: Date.now(), todo: command, isDone: false}])
-        setTodo("")
-        resetTranscript()
-        setMessage('adding...')
-        setTimeout(()=>setMessage('added'),2000)
-      }
     },
     {
       command: 'stop listening',
@@ -40,11 +28,40 @@ const VirtualAssistant: React.FC= () => {
            setMessage('the weather outside is frightful')
         }, 
     },
-    { command: ['completed * task'],
+    {
+      command: ['add * to my list', 'add * to the list'], 
+      callback: (command:string) => {
+        console.log(command)
+        setTodo(command)
+        setTodos((prev) => [...prev, {id: Date.now(), todo: command, isDone: false}])
+        setTodo("")
+        resetTranscript()
+        setTimeout(()=>setMessage('added'),1000)
+      }
+    },
+    { 
+      command: ['completed *', '* done', 'Mark * as done', 'mark * as done'],
       callback: (item:string) => {
-        setMessage(`you selected task: ${item} Is that correct?`)
+        
+        setTodos(todos.map((todo) => 
+        todo.todo.includes(item) ? {...todo, isDone: !todo.isDone} : todo))
       } 
+    },
+    {
+      command: ['edit * to *'],
+      callback: (item1:string, item2:string) => {
+      setTodos(todos.map((todo) =>  
+      todo.todo.includes(item1) ? {...todo, todo: item2} : todo))
+    }},
+
+    {
+      command: ['delete * from my list', 'remove * from my list'],
+      callback: (item:string) => {
+        setTodos(todos.filter((todo) =>
+        !todo.todo.includes(item)))
+        setMessage('removed')
     }
+  },
   ]
 
   const [message, setMessage] = useState<string>(""); 
