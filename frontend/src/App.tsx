@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import './App.css';
-import './styles.css'; 
+import './styles/App.css'; 
 import InputField from "./components/InputField"
 import VirtualAssistant from "./components/VirtualAssistant"
 

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Todo} from "../model"; 
-import '../styles.css'; 
+import '../styles/SingleToDo.css'; 
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 interface Props {
    todo: Todo,
@@ -38,15 +40,25 @@ const SingleToDo: React.FC<Props> = ({todo, todos, setTodos}) => {
       <form className="todo_item" onSubmit={(e)=>handleEdit(e,todo.id)}> 
         <div className="todo_text"> 
             {edit ? (<input value={editTodo} onChange={(e)=> setEditTodo(e.target.value)} />) : todo.isDone ? 
-              (<s> {todo.todo} </s>) :
-              (<span> {todo.todo} </span>)
+               <div> {todo.isDone ? 
+              <CheckBoxIcon className="checkbox" onClick={()=>handleDone(todo.id)}/> : 
+              <CheckBoxOutlineBlankIcon fontSize='small' className="unchecked" onClick={()=>handleDone(todo.id)}/> 
+                }
+                  <s> {todo.todo} </s> 
+              </div> :
+
+              <div> {todo.isDone ?
+                <CheckBoxIcon className="checkbox" onClick={()=>handleDone(todo.id)}/> : 
+                <CheckBoxOutlineBlankIcon fontSize='small' className="unchecked" onClick={()=>handleDone(todo.id)}/>} 
+                <span>{todo.todo} </span>
+              </div>
             }
-            <button type='button' className='todo_action' onClick={()=> {
+            {/* <button type='button' className='todo_action' onClick={()=> {
               if (!edit && !todo.isDone) {
               setEdit(!edit)
-            }}} > Edit </button>
-            <button type='button' className='todo_action' onClick={()=>handleDelete(todo.id)}>Delete</button>
-            <button type='button' className='todo_action' onClick={()=>handleDone(todo.id)}>Mark</button>
+            }}} > Edit </button> */}
+            {/* <button type='button' className='todo_action' onClick={()=>handleDelete(todo.id)}>Delete</button> */}
+            {/* <button type='button' className='todo_action' onClick={()=>handleDone(todo.id)}>Mark</button> */}
         </div>
       </form>
       )

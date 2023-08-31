@@ -2,6 +2,10 @@ import React, {useState} from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import ToDoList from "./ToDoList"
 import {Todo} from "../model"; 
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import "../styles/VirtualAssistant.css"
+
 
 
 const VirtualAssistant: React.FC= () => {
@@ -55,7 +59,7 @@ const VirtualAssistant: React.FC= () => {
     }},
 
     {
-      command: ['delete * from my list', 'remove * from my list'],
+      command: ['delete * from my list', 'remove * from my list', 'remove *'],
       callback: (item:string) => {
         setTodos(todos.filter((todo) =>
         !todo.todo.includes(item)))
@@ -80,20 +84,12 @@ const VirtualAssistant: React.FC= () => {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
-  // const handleAdd = (task:string) => {
-  //     console.log('called')
-  //     let extraction = transcript
-  //     console.log(extraction)
-  //     let add_index = extraction.indexOf('list')
-  //     let task = extraction.substring(add_index+4)
-  //     console.log(task)
-  //     if (task) {
-  //       setTodo(task)
-  //       setTodos((prev) => [...prev, {id: Date.now(), todo: task, isDone: false}])
-  //       console.log(task)
-  //       setMessage(`adding ${task}`)
-  //     }
-  // }
+  const handleMic = () => {
+    if (listening) {
+      handleStopListening()
+     } 
+    else { handleStartListening() } 
+  }
 
   const handleStartListening = () => {
     console.log('listening')
@@ -101,7 +97,7 @@ const VirtualAssistant: React.FC= () => {
   };
 
   const handleStopListening = () => {
-    console.log('stop')
+    console.log('stop mic')
     SpeechRecognition.stopListening();
     resetTranscript()
   }
@@ -109,11 +105,11 @@ const VirtualAssistant: React.FC= () => {
   return (
     <div> 
       <ToDoList todos={todos} setTodos={setTodos}/>
-      <p> Microphone: {listening ? 'on' : 'off' } </p>
-      <button onClick={handleStartListening}>Start</button>
-      <button onClick={handleStopListening}>Stop</button>
+      <button className="microphone_button" type="button" onClick={handleMic}> {listening ? <MicIcon className='microphone'/> : <MicOffIcon className='microphone'/> } </button>
+      {/* <button onClick={handleStartListening}>Start</button>
+      <button onClick={handleStopListening}>Stop</button> */}
       {/* <button onClick={resetTranscript}>Reset</button> */}
-      <p> {transcript} </p>
+      {/* <p> {transcript} </p> */}
       <p>{message}</p>
     </div>
   )

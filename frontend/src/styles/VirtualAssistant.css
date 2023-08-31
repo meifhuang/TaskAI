@@ -1,0 +1,11 @@
+.microphone {
+    color: #5e75af;
+}
+
+.microphone_button {
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid gray;
+    margin: 1em;
+    padding: 1.5em;
+}

@@ -1,0 +1,30 @@
+.todo_text {
+    margin: .5em;
+    padding: .5em;
+    display: flex;
+    /* align-items: center; */
+}
+.checkbox, .unchecked {
+    margin-right: 1.5em;
+}
+
+.todo_text span {
+    font-size: 18px;
+}
+
+.todo_item {
+    width: 100%;
+    border-bottom: 1px solid rgb(224, 224, 224);
+    padding: 5px;
+    /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; */
+}
+
+.todo_action {
+    margin: .5em;
+
+}
+
+
