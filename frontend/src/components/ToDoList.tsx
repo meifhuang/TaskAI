@@ -42,7 +42,6 @@ const ToDoList: React.FC<Props> = ({todos, setTodos}) => {
           <AddIcon className="add_icon"/> Add Task
       </div>
 
-
     { todos.map((todo) => (
        <SingleTodo todo={todo} key={todo.id} todos={todos} setTodos={setTodos} />
     ))}

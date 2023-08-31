@@ -10,7 +10,7 @@ interface Props {
 const InputField: React.FC<Props> = ({todo, setTodo, handleAdd}) => {
 
     return <form className='add_form' onSubmit={(e) => { handleAdd(e) }} >
-            {/* <button type='submit' onClick={handleAdd} className="add_task_button"> + </button>  */}
+            <button type='submit' onClick={handleAdd} className="add_task_button"> + </button> 
             <input type='input' 
             placeholder='Enter a task' 
             className='add_task_input'
@@ -19,6 +19,6 @@ const InputField: React.FC<Props> = ({todo, setTodo, handleAdd}) => {
             {/* <button className='input_submit' type='submit' > Add </button> */}
             </form> 
 
-}
+    }
 export default InputField;
 
