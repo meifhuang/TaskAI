@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Todo} from "../model"; 
 import SingleTodo from "../components/SingleTodo"
+import InputField from './InputField';
 import "../styles/ToDoList.css"
-
+import AddIcon from '@mui/icons-material/Add';
 
 
 interface Props {
@@ -10,22 +11,19 @@ interface Props {
     setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
-
 const ToDoList: React.FC<Props> = ({todos, setTodos}) => {
 
-  //   const handleAdd = (task:string) => {
-  //     console.log('called')
-  //     let extraction = transcript
-  //     console.log(extraction)
-  //     let add_index = extraction.indexOf('list')
-  //     let task = extraction.substring(add_index+4)
-  //     console.log(task)
-  //     if (task) {
-  //       setTodo(task)
-  //       setTodos((prev) => [...prev, {id: Date.now(), todo: task, isDone: false}])
-  //       console.log(task)
-  //       setMessage(`adding ${task}`)
-  //     }
+  const [todo, setTodo] = useState<string>("");
+
+  // const [showInputField, setShowInputField] = useState<boolean>(false); 
+
+   const handleAdd = (e: React.FormEvent) => {
+      e.preventDefault()
+      setTodos((prev) => [...prev, {id: Date.now(), todo: todo, isDone: false, showInput: true}])
+      }
+
+  // const handleShowInputField = () => {
+  //     setTodos((prev) => [...prev, {id: Date.now(), todo: "", isDone: false, showInput: true}])
   // }
 
     const date = new Date();
@@ -34,16 +32,23 @@ const ToDoList: React.FC<Props> = ({todos, setTodos}) => {
     const day = date.getDate()
     const year = date.getFullYear()
 
+
     return (
     <div className="todo_list"> 
       <div className='date_display'>
         <h3> {dow}, {month} {day} </h3>
       </div>
+      <div className="add_task" onClick={(e)=> handleAdd(e)}>
+          <AddIcon className="add_icon"/> Add Task
+      </div>
+
+
     { todos.map((todo) => (
-       <SingleTodo todo={todo} key={todo.id} todos={todos} setTodos={setTodos}/>
+       <SingleTodo todo={todo} key={todo.id} todos={todos} setTodos={setTodos} />
     ))}
-  
-    <button type='button' onClick={} className="add_task_button"> + </button> 
+    
+    {/* <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd}/> */}
+
   </div>
     )
 }

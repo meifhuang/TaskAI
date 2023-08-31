@@ -8,6 +8,12 @@ body {
     background-color: #ece8e2c4;
 }
 
+:root {
+  --blue:  rgb(184, 198, 253);
+  --green: rgb(204, 236, 229);
+  --border: rgb(242, 235, 235);
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

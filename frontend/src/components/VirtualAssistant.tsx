@@ -36,9 +36,7 @@ const VirtualAssistant: React.FC= () => {
       command: ['add * to my list', 'add * to the list'], 
       callback: (command:string) => {
         console.log(command)
-        setTodo(command)
-        setTodos((prev) => [...prev, {id: Date.now(), todo: command, isDone: false}])
-        setTodo("")
+        setTodos((prev) => [...prev, {id: Date.now(), todo: command, isDone: false, showInput: false}])
         resetTranscript()
         setTimeout(()=>setMessage('added'),1000)
       }
@@ -69,7 +67,6 @@ const VirtualAssistant: React.FC= () => {
   ]
 
   const [message, setMessage] = useState<string>(""); 
-  const [todo, setTodo] = useState<string>("");
   const [todos, setTodos] = useState<Todo[]>([]); 
 
   const {

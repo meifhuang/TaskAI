@@ -9,7 +9,6 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1 className="heading"> TaskAI </h1>
-      {/* <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd}/> */}
       <VirtualAssistant/>
     </div>
   );
