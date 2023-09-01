@@ -10,6 +10,8 @@ import "../styles/VirtualAssistant.css"
 
 const VirtualAssistant: React.FC= () => {
 
+  const command_list = ["Add ______ to my list", "Mark ______ as done", "Edit task ______ to ______", "Remove ______ from my list"] 
+
   const commands = [
     {
       command: 'reset',
@@ -100,14 +102,28 @@ const VirtualAssistant: React.FC= () => {
   }
 
   return (
-    <div> 
-      <ToDoList todos={todos} setTodos={setTodos}/>
-      <button className="microphone_button" type="button" onClick={handleMic}> {listening ? <MicIcon className='microphone'/> : <MicOffIcon className='microphone'/> } </button>
+    <div className="container"> 
+      <div className="todo_section">
+        <ToDoList todos={todos} setTodos={setTodos}/>
+      </div>
+      <div className="chatbox"> 
+        <h1> Virtual Assistant </h1>
+        <h3> Hey there, what can I do for you today? </h3>
+        <p> Here are some suggestions</p> 
+        <div className="command_container"> 
+          {command_list.map((command) => (
+            <div className="command_options"> 
+              {command}
+            </div>
+          ))}
+        </div>
+        <p>{message}</p>
+        <button className="microphone_button" type="button" onClick={handleMic}> {listening ? <MicIcon className='microphone'/> : <MicOffIcon className='microphone'/> } </button>
+      </div>
       {/* <button onClick={handleStartListening}>Start</button>
       <button onClick={handleStopListening}>Stop</button> */}
       {/* <button onClick={resetTranscript}>Reset</button> */}
       {/* <p> {transcript} </p> */}
-      <p>{message}</p>
     </div>
   )
   }
