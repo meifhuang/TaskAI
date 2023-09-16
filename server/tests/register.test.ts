@@ -8,15 +8,14 @@ describe('POST /register', () => {
             firstname: 'testname',
             username: 'testuser', 
             password: 'testpass',
-            email: 'test@example.com',
+            email: 'test2@example.com',
         }
-
-    const response = await request(app)
+        const response = await request(app)
         .post('/register')
         .send(user);
-
     expect(response.status).toBe(201);
     expect(response.body).toMatchObject(user);
+    // expect(response.body).toEqual({message: 'Success'});
     });
 
     test('should handle registration errs', async () => {
@@ -27,6 +26,6 @@ describe('POST /register', () => {
             .post('/register')
             .send(invalidUser);
         expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty('message', 'missing information');
+        expect(response.body).toHaveProperty('message', 'Validation failed');
     })
 })
