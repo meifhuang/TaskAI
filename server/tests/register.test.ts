@@ -8,7 +8,7 @@ describe('POST /register', () => {
             firstname: 'testname',
             username: 'testuser', 
             password: 'testpass',
-            email: 'test2@example.com',
+            email: 'test3@example.com',
         }
         const response = await request(app)
         .post('/register')
@@ -27,5 +27,19 @@ describe('POST /register', () => {
             .send(invalidUser);
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('message', 'Validation failed');
+    })
+
+    test('should handle registration errs', async () => {
+        const user = {
+            firstname: 'testname',
+            username: 'testuser', 
+            password: 'testpass',
+            email: 'test2@example.com',
+        }
+        const response = await request(app)
+            .post('/register')
+            .send(user);
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('message', 'Email already exists');
     })
 })
