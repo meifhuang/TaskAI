@@ -7,19 +7,16 @@ import { useNavigate } from 'react-router-dom';
 // import AddIcon from '@mui/icons-material/Add';
 
 
-const Register: React.FC = () => {
+const Login: React.FC = () => {
 
-    const navigate = useNavigate(); 
+    const navigate  = useNavigate(); 
 
     const initialValues = {
-        firstname:'',
-        email:'',
         username:'',
         password:''
     }
 
     const [values, setValues] = useState(initialValues);
-
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -31,48 +28,30 @@ const Register: React.FC = () => {
         try {
             const response = await axios({
                 method: 'post',
-                url: 'http://localhost:3000/register',
+                url: 'http://localhost:3000/login',
                 data: {
-                    firstname: values.firstname,
-                    email: values.email,
                     username: values.username, 
                     password: values.password
                 }
             });
             if (response) {
-                console.log('successfully registered')
+                console.log('successfully logged in')
+                localStorage.setItem('token', response.data.token)
                 console.log(response)
-                navigate('/login')
+                navigate('/dashboard')
             }
             else {
-                console.log('failed')
+                console.log('Login failed')
             }
         }
         catch (err) {
-            console.error('Error during registration', err)
+            console.error('Error during login', err)
         }
     }
 
   return (
     <form onSubmit={handleSubmit}>
-        <h1> Register </h1>
-        <h2> Please fill in all fields  </h2>
-        <label htmlFor="firstname"> Name </label>
-        <input 
-            type="text" 
-            name="firstname"
-            id="firstname"
-            value={values.firstname}
-            onChange={handleInputChange}
-            required/>
-        <label htmlFor="email"> Email </label>
-        <input 
-            type="text" 
-            name="email"
-            id="email"
-            value={values.email}
-            onChange={handleInputChange}
-            required/>
+        <h1> Login </h1>
         <label htmlFor="username" > Username  </label>
         <input 
             type="text" 
@@ -94,4 +73,4 @@ const Register: React.FC = () => {
   )
 }
 
-export default Register;
+export default Login;
