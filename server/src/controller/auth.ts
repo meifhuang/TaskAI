@@ -13,7 +13,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     const {firstname, username, password, email} = req.body;
 
     if (!firstname || !username || !password || !email) {
-        res.status(400).json({message: 'Missing info'})
+        res.status(400).json({message: 'Missing credentials'})
         return
     }
 
@@ -23,11 +23,7 @@ export async function register(req: Request, res: Response): Promise<void> {
         res.status(201).json(user) 
     }
     catch (err: any) {
-        console.error(err); 
-        if (err.name === 'SequelizeValidationError') {
-            res.status(400).json({message: 'Validation failed'})
-        }
-        else if (err.name === 'SequelizeUniqueConstraintError') {
+        if (err.name === 'SequelizeUniqueConstraintError') {
             res.status(400).json({message: 'Email already exists'})
         }
         else {
@@ -52,7 +48,7 @@ export async function login(req: Request, res: Response): Promise<void> {
         } 
         
         const token = jwtUtils.generateToken({id: user.id, username: user.username})
-        res.json({token}) 
+        res.status(200).json({token, user}) 
     }
     catch (err) {
         console.error('Error during login', err)
