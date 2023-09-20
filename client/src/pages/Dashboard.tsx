@@ -1,28 +1,17 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button'; 
+import Navbar from "../components/Navbar";
 
 
 const Dashboard: React.FC = () => {
 
   const navigate = useNavigate();
-
-  function handleLogout(): void  {
-      localStorage.removeItem('token')
-      navigate('/');
-  }
-  
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/');
-    }
-  }, [navigate])
-
+ 
   return (
     <>
+    <Navbar/> 
     <h1> Dashboard</h1>
-    <Button variant="contained" onClick={handleLogout}> Logout </Button>
     </>
   )
 }

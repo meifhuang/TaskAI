@@ -18,5 +18,6 @@ const port = process.env.PORT || 3000;
     catch (err) {
         console.error('error syncing', err); 
     }
+    
 })();
  
