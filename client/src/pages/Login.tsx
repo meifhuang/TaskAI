@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button'; 
+
 
 // import ToDoItem from "./ToDoItem"
 // import {Todo} from "../model"
@@ -68,7 +70,7 @@ const Login: React.FC = () => {
             value={values.password}
             onChange={handleInputChange}
             required/>
-        <button type="submit"> Submit </button>
+        <Button variant="contained" type="submit"> Submit </Button>
     </form>
   )
 }
