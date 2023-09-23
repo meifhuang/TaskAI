@@ -7,11 +7,11 @@ import { Typography } from '@mui/material';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Image from '../assets/register.jpg';
 import Link from '@mui/material/Link';
+import Image from '../assets/login.jpg';
 
 
-const registerStyles = {
+const loginStyles = { 
     box: {
         height: '80%',
         width: '80%',
@@ -34,7 +34,7 @@ const registerStyles = {
             height: '70%'
         }
     },
-    registerBox: {
+    loginBox: {
         width: '80%', 
         height: '100%',
         display:'flex', 
@@ -56,19 +56,17 @@ const registerStyles = {
     },
 }
 
-const Register: React.FC = () => {
 
-    const navigate = useNavigate(); 
+const Login: React.FC = () => {
+
+    const navigate  = useNavigate(); 
 
     const initialValues = {
-        firstname:'',
-        email:'',
         username:'',
         password:''
     }
 
     const [values, setValues] = useState(initialValues);
-
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -80,98 +78,73 @@ const Register: React.FC = () => {
         try {
             const response = await axios({
                 method: 'post',
-                url: 'http://localhost:3000/register',
+                url: 'http://localhost:3000/login',
                 data: {
-                    firstname: values.firstname,
-                    email: values.email,
                     username: values.username, 
                     password: values.password
                 }
             });
             if (response) {
-                console.log('successfully registered')
+                console.log('successfully logged in')
+                localStorage.setItem('token', response.data.token)
                 console.log(response)
-                navigate('/login')
+                navigate('/dashboard')
             }
             else {
-                console.log('failed')
+                console.log('Login failed')
             }
         }
         catch (err) {
-            console.error('Error during registration', err)
+            console.error('Error during login', err)
         }
     }
 
   return (
-    <Box sx={registerStyles.box}>
-        <Box
+       <Box sx={loginStyles.box}> 
+            <Box sx={loginStyles.imageBox}> 
+                <img src={Image} width='100%' height='100%'/> 
+            </Box>
+            <Box
             component="form"
             noValidate
             autoComplete="off"
             onSubmit={handleSubmit}
-            sx={registerStyles.registerBox}
+            sx= {loginStyles.loginBox}
             px={8}
-        >
-        <Typography variant='h3' m={1}> Register </Typography>
-        <TextField
-            variant="outlined"
-            type="text" 
-            name="firstname"
-            id="firstname"
-            value={values.firstname}
-            onChange={handleInputChange}
-            required
-            label="first name"
-            fullWidth
-            sx={{py:1}}
-        />
-        <TextField
-            variant="outlined"
-            type="text" 
-            name="email"
-            id="email"
-            label="email"
-            value={values.email}
-            onChange={handleInputChange}
-            required
-            fullWidth
-            sx={{py:1}}
-            />
-        <TextField 
+            >
+            <Typography variant='h3' m={2}> Login </Typography>
+            <TextField
             variant="outlined"
             type="text" 
             name="username"
             id="username"
-            label="username"
             value={values.username}
             onChange={handleInputChange}
             required
+            label="username"
             fullWidth
-            sx={{py:1}}
+            sx={{py: 1}}
             />
-        <TextField 
+            <TextField
             variant="outlined"
             type="password" 
             name="password"
             id="password" 
-            label="password"
             value={values.password}
             onChange={handleInputChange}
             required
+            label="password"
             fullWidth
             sx={{py:1}}
             />
-        <Box sx={{display: 'flex'}}> 
-            <Typography align='center' m={2}> Already have an account? 
-            <Link href='/login'> Login here </Link> </Typography> 
+            <Box sx={{display: 'flex'}}> 
+            <Typography align='center' m={2}> Don't have an account? 
+            <Link href='/register'> Sign up here </Link> </Typography> 
             </Box>
-        <Button variant="contained" type="submit" sx={registerStyles.button} > Sign up </Button>
-        </Box>
-        <Box sx={registerStyles.imageBox}> 
-            <img src={Image} width='100%' height='100%'/> 
-        </Box>
+            <Button variant="contained" type="submit" sx={loginStyles.button}> Login </Button>
+            </Box>
         </Box>
   )
 }
 
-export default Register;
+export default Login;

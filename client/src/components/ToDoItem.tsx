@@ -1,8 +1,13 @@
 import { useState } from 'react'
-import {Todo} from "../model"
+// import {Todo} from "../model"
 
 interface Props {
-    todo: Todo,
+  todo: { 
+    id: number;
+    todo: string;
+    isDone: boolean;
+    showInput: boolean;
+  }
 }
 
 const ToDoItem: React.FC<Props> = ({todo}) => {

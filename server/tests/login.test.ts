@@ -12,8 +12,6 @@ describe('POST /login', () => {
         .post('/login')
         .send(user);
     expect(response.status).toBe(200);
-    // expect(response.body).toMatchObject(user);
-    // expect(response.body).toEqual({message: 'Success'});
     });
 
     test('should handle login errs', async () => {
