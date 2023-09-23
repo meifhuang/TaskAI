@@ -32,12 +32,20 @@ const loginStyles = {
         justifyContent:'center', 
         alignItems: 'center',
         boxShadow: '0px 0px 25px 10px rgba(20, 0, 0, 0.1)',
-        backgroundColor: 'rgba(0, 0, 0, 0.1)'
+        '@media (max-width: 860px)': {
+            boxShadow: 'none',
+            height: '100vh',
+            width: '100vw'
+        }
 
     },
     imageBox: {
         width: '100%',
         height: '100%',
+        '@media (max-width: 860px)': {
+            width: '0%',
+            height: '70%'
+        }
     },
     loginBox: {
         width: '80%', 
@@ -46,7 +54,17 @@ const loginStyles = {
         flexDirection:'column',
         justifyContent:'center', 
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        '@media (max-width: 860px)': {
+            width: '100%',
+            height: '100%',
+            boxShadow: 'none',
+            backgroundImage: `url(${Background})`,
+            backgroundSize: 'cover'
+        }
+    },
+    button: {
+        backgroundColor: '#84bfb2',
     }
 }
 
@@ -94,10 +112,10 @@ const Login: React.FC = () => {
     }
 
   return (
-    <Box sx={loginStyles.container} p={0} m={0}>
+    <Box sx={loginStyles.container}>
        <Box sx={loginStyles.box}> 
             <Box sx={loginStyles.imageBox}> 
-            <img src={Image} width='100%' height='100%'/> 
+                <img src={Image} width='100%' height='100%'/> 
             </Box>
             <Box
             component="form"
@@ -105,7 +123,7 @@ const Login: React.FC = () => {
             autoComplete="off"
             onSubmit={handleSubmit}
             sx= {loginStyles.loginBox}
-            px={10}
+            px={8}
             >
             <Typography variant='h3' m={2}> Login </Typography>
             <TextField
@@ -133,10 +151,10 @@ const Login: React.FC = () => {
 
             />
             <Box sx={{display: 'flex'}}> 
-            <Typography align='center' color='primary' m={2}> Don't have an account? 
+            <Typography align='center' m={2}> Don't have an account? 
             <Link href='/register'> Sign up here </Link> </Typography> 
             </Box>
-            <Button variant="contained" type="submit" color="success"> Submit </Button>
+            <Button variant="contained" type="submit" sx={loginStyles.button}> Login </Button>
             </Box>
         </Box>
     </Box>
