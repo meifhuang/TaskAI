@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+
 import Button from '@mui/material/Button'; 
 import { Typography } from '@mui/material';
 import Container from '@mui/material/Container';
@@ -10,10 +11,6 @@ import Link from '@mui/material/Link';
 import Image from '../assets/login.jpg';
 import Background from '../assets/background.jpg'; 
 
-
-// import ToDoItem from "./ToDoItem"
-// import {Todo} from "../model"
-// import AddIcon from '@mui/icons-material/Add';
 
 const loginStyles = {
     container: {
@@ -56,16 +53,17 @@ const loginStyles = {
         alignItems: 'center',
         backgroundColor: 'white',
         '@media (max-width: 860px)': {
-            width: '100%',
-            height: '100%',
+            width: '90%',
+            height: '80%',
             boxShadow: 'none',
-            backgroundImage: `url(${Background})`,
-            backgroundSize: 'cover'
         }
     },
     button: {
-        backgroundColor: '#84bfb2',
-    }
+        '&:hover': {
+         backgroundColor: '#6db3a4'
+        },
+         backgroundColor: '#84bfb2',
+    },
 }
 
 
@@ -112,7 +110,7 @@ const Login: React.FC = () => {
     }
 
   return (
-    <Box sx={loginStyles.container}>
+    <Container sx={loginStyles.container} maxWidth="xl">
        <Box sx={loginStyles.box}> 
             <Box sx={loginStyles.imageBox}> 
                 <img src={Image} width='100%' height='100%'/> 
@@ -147,8 +145,8 @@ const Login: React.FC = () => {
             onChange={handleInputChange}
             required
             label="password"
-            fullWidth 
-
+            fullWidth
+            sx={{py:1}}
             />
             <Box sx={{display: 'flex'}}> 
             <Typography align='center' m={2}> Don't have an account? 
@@ -157,7 +155,7 @@ const Login: React.FC = () => {
             <Button variant="contained" type="submit" sx={loginStyles.button}> Login </Button>
             </Box>
         </Box>
-    </Box>
+    </Container>
   )
 }
 
