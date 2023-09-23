@@ -9,19 +9,9 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Image from '../assets/login.jpg';
-import Background from '../assets/background.jpg'; 
 
 
-const loginStyles = {
-    container: {
-        height: '100vh',
-        display: 'flex', 
-        justifyContent:'center', 
-        alignItems: 'center',
-        backgroundImage: `url(${Background})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-    }, 
+const loginStyles = { 
     box: {
         height: '80%',
         width: '80%',
@@ -110,7 +100,6 @@ const Login: React.FC = () => {
     }
 
   return (
-    <Container sx={loginStyles.container} maxWidth="xl">
        <Box sx={loginStyles.box}> 
             <Box sx={loginStyles.imageBox}> 
                 <img src={Image} width='100%' height='100%'/> 
@@ -155,7 +144,6 @@ const Login: React.FC = () => {
             <Button variant="contained" type="submit" sx={loginStyles.button}> Login </Button>
             </Box>
         </Box>
-    </Container>
   )
 }
 

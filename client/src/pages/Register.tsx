@@ -7,21 +7,11 @@ import { Typography } from '@mui/material';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Background from '../assets/background.jpg'; 
 import Image from '../assets/register.jpg';
 import Link from '@mui/material/Link';
 
 
 const registerStyles = {
-    container: {
-        height: '100vh',
-        display: 'flex', 
-        justifyContent:'center', 
-        alignItems: 'center',
-        backgroundImage: `url(${Background})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-    }, 
     box: {
         height: '80%',
         width: '80%',
@@ -71,7 +61,7 @@ const Register: React.FC = () => {
     const navigate = useNavigate(); 
 
     const initialValues = {
-        fullname:'',
+        firstname:'',
         email:'',
         username:'',
         password:''
@@ -92,7 +82,7 @@ const Register: React.FC = () => {
                 method: 'post',
                 url: 'http://localhost:3000/register',
                 data: {
-                    fullname: values.fullname,
+                    firstname: values.firstname,
                     email: values.email,
                     username: values.username, 
                     password: values.password
@@ -113,8 +103,7 @@ const Register: React.FC = () => {
     }
 
   return (
-    <Container sx={registerStyles.container} maxWidth="xl"> 
-        <Box sx={registerStyles.box}>
+    <Box sx={registerStyles.box}>
         <Box
             component="form"
             noValidate
@@ -127,9 +116,9 @@ const Register: React.FC = () => {
         <TextField
             variant="outlined"
             type="text" 
-            name="fullname"
-            id="fullname"
-            value={values.fullname}
+            name="firstname"
+            id="firstname"
+            value={values.firstname}
             onChange={handleInputChange}
             required
             label="first name"
@@ -182,8 +171,6 @@ const Register: React.FC = () => {
             <img src={Image} width='100%' height='100%'/> 
         </Box>
         </Box>
-    </Container>
-
   )
 }
 

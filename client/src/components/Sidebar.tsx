@@ -6,24 +6,30 @@ import Navbar from "../components/Navbar";
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
-import Sidebar from '../components/Sidebar'; 
 
 
-const dashboardStyles = {
+
+const sidebarStyles = {
 
 }
 
-const Dashboard: React.FC = () => {
+const Sidebar: React.FC = () => {
 
   const navigate = useNavigate();
  
   return (
-    <>
-      {/* <Sidebar/> */}
-      <ToDoList/>
-    {/* </Box> */}
-    </>
+    <Drawer
+      anchor='left'
+      open={true}
+      variant='persistent'
+      // onClose={toggleDrawer(anchor, false)
+    >
+      {
+        <Typography variant='h5' m={3} p={1} align='left'> Mei Huang </Typography>
+        
+      }
+    </Drawer>
   )
 }
 
-export default Dashboard;
+export default Sidebar;

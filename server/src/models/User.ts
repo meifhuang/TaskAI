@@ -3,14 +3,14 @@ import sequelize from "../config/sequelize-config";
 
 class User extends Model {
     public id!: number;
-    public fullname!: string; 
+    public firstname!: string; 
     public username!: string;
     public password!: string;
     public email!: string;
 }
 User.init(
     {
-   fullname: {
+   firstname: {
             type: DataTypes.STRING, 
             allowNull: false, 
         }, 
