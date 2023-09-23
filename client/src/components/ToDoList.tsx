@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
 
 
 const todolistStyles = {
@@ -14,7 +15,7 @@ const todolistStyles = {
     flexDirection: 'column',
     backgroundColor: 'white',
     borderRadius: '6px',
-    height: '38em', 
+    height: '35em', 
     width: '36em',
     boxShadow: '0px 0px 47px -17px rgb(156, 168, 178)'
   },
@@ -30,18 +31,16 @@ const todolistStyles = {
   }
 }
 
-const fakeTodos = [
-  'Buy groceries',
-  'Finish report',
-  'Walk the dog',
-  // ... more fake todos
+const fakeTodos: Todo[] = [
+  { id: 1, todo: 'Complete the project', isDone: false, showInput: false },
+  { id: 2, todo: 'Send email to client', isDone: true, showInput: false },
+  { id: 3, todo: 'Prepare for the meeting', isDone: false, showInput: true },
 ];
-
 const ToDoList: React.FC = () => {
 
-  const [todos, setTodos] = useState<String[]>(fakeTodos); 
-  
 
+  const [todos, setTodos] = useState<Todo[]>(fakeTodos); 
+  
 //   const handleAdd = (e: React.FormEvent) => {
 //     e.preventDefault()
 //     setTodos((prev) => [...prev, {id: Date.now(), todo: todo, isDone: false, showInput: true}])
@@ -50,14 +49,14 @@ const ToDoList: React.FC = () => {
   return (
     <Box sx={todolistStyles.todo_list} p={5} m={2}>
         <Typography variant='h3' m={1}> Today's Priority Task </Typography>
-        <Typography variant='h6' m={1}> Enter three of the most important tasks for the day </Typography>
-        <Box sx={todolistStyles.add_task} p={1} >
+        <Typography variant='h6' m={2}> Enter three of the most important tasks for the day </Typography>
+        {/* <Box sx={todolistStyles.add_task} p={1} >
           <AddIcon className="add_icon"/> Add Task
-        </Box>
-        {todos.map(() => (
-            <ToDoItem/>
-        ))}
-      <TextField
+        </Box> */}
+        {todos.map((todo) => (
+            <ToDoItem todo={todo}/>
+        ))} 
+      {/* <TextField
             variant="outlined"
             type="text" 
             name="todo"
@@ -68,7 +67,7 @@ const ToDoList: React.FC = () => {
             label="enter todo"
             fullWidth
             sx={{py:1}}
-          />
+          /> */}
     </Box>
   )
 }
