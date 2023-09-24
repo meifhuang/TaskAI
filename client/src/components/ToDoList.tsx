@@ -17,7 +17,7 @@ const todolistStyles = {
     borderRadius: '6px',
     height: '35em', 
     width: '36em',
-    boxShadow: '0px 0px 47px -17px rgb(156, 168, 178)'
+    boxShadow: '0px 0px 40px 8px rgb(156, 168, 178)'
   },
   add_task: {
     backgroundColor: 'white',
@@ -46,28 +46,34 @@ const ToDoList: React.FC = () => {
 //     setTodos((prev) => [...prev, {id: Date.now(), todo: todo, isDone: false, showInput: true}])
 // }
 
+  const handleToggle = (id: number) => {
+    setTodos(todos.map((todo) => todo.id === id ? {...todo, isDone: !todo.isDone} : todo ))
+  }
+
   return (
     <Box sx={todolistStyles.todo_list} p={5} m={2}>
-        <Typography variant='h3' m={1}> Today's Priority Task </Typography>
-        <Typography variant='h6' m={2}> Enter three of the most important tasks for the day </Typography>
+        <Typography variant='h3' m={1} align='center'> Today's Priority Task </Typography>
+        <Typography m={2} align='center'> What's the 3 most important tasks of the day? </Typography>
         {/* <Box sx={todolistStyles.add_task} p={1} >
           <AddIcon className="add_icon"/> Add Task
         </Box> */}
         {todos.map((todo) => (
-            <ToDoItem todo={todo}/>
-        ))} 
-      {/* <TextField
+            <ToDoItem todo={todo} toggleTodo={handleToggle}/>
+        ))}  
+        {/* {todos.length === 3 ? <> </> :
+        <TextField
             variant="outlined"
             type="text" 
             name="todo"
             id="todo" 
-            value={todo}
+            // value={todo}
             // onChange={handleInputChange}
             required
             label="enter todo"
             fullWidth
             sx={{py:1}}
-          /> */}
+          />
+        } */}
     </Box>
   )
 }

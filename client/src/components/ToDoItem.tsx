@@ -7,21 +7,24 @@ import Checkbox from '@mui/material/Checkbox';
 const todoItemStyles = {
   box: {
     border: '1px solid black',
-    borderRadius: '5px',
+    borderRadius: '2px',
     display: 'flex',
     alignItems:'center'
   } 
 }
 
 interface Props {
-  todo: Todo
+  todo: Todo,
+  toggleTodo: (id: number) => void;
 }
 
-const ToDoItem: React.FC<Props> = ({todo}) => {
+const ToDoItem: React.FC<Props> = ({todo, toggleTodo}) => {
+
+  const [editMode, setEditMode] = useState<boolean>(false); 
 
     return (
       <Box sx={todoItemStyles.box} m={1} p={1}>
-        <Checkbox /> <Typography > {todo.todo} </Typography>
+        <Checkbox checked={todo.isDone} onClick={()=> toggleTodo(todo.id)} /> <Typography > {todo.todo} </Typography>
       </Box>
     )
   }
