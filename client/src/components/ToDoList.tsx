@@ -5,7 +5,8 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import Button from '@mui/material/Button'; 
+
 
 
 const todolistStyles = {
@@ -13,6 +14,8 @@ const todolistStyles = {
     display: 'flex', 
     position: 'relative',
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: '6px',
     height: '35em', 
@@ -27,14 +30,22 @@ const todolistStyles = {
     border: '1px solid black',
     borderRadius: '5px',
     width: '100%',
-   
+  },
+  button: {
+      '&:hover': {
+       backgroundColor: '#6db3a4'
+      },
+       backgroundColor: '#84bfb2',
+  },
+  todos_box: {
+    width: '100%'
   }
 }
 
 const fakeTodos: Todo[] = [
-  { id: 1, todo: 'Complete the project', isDone: false, showInput: false },
-  { id: 2, todo: 'Send email to client', isDone: true, showInput: false },
-  { id: 3, todo: 'Prepare for the meeting', isDone: false, showInput: true },
+  { id: 1, todo: 'Complete the project', isDone: false},
+  { id: 2, todo: 'Send email to client', isDone: true},
+  { id: 3, todo: 'Prepare for the meeting', isDone: false},
 ];
 const ToDoList: React.FC = () => {
 
@@ -50,6 +61,11 @@ const ToDoList: React.FC = () => {
     setTodos(todos.map((todo) => todo.id === id ? {...todo, isDone: !todo.isDone} : todo ))
   }
 
+  // const handleSubmit = (e: React.FormEvent, id: number) => {
+  //   // setTodos(todos.map((todo) => todo.id == id ? {...todo, todo: data.}))
+  //   e.preventDefault()
+  // }
+
   return (
     <Box sx={todolistStyles.todo_list} p={5} m={2}>
         <Typography variant='h3' m={1} align='center'> Today's Priority Task </Typography>
@@ -57,9 +73,12 @@ const ToDoList: React.FC = () => {
         {/* <Box sx={todolistStyles.add_task} p={1} >
           <AddIcon className="add_icon"/> Add Task
         </Box> */}
+       <Box sx={todolistStyles.todos_box}>
         {todos.map((todo) => (
-            <ToDoItem todo={todo} toggleTodo={handleToggle}/>
+            <ToDoItem todo={todo} toggleTodo={handleToggle} />
         ))}  
+      </Box>
+        <Button variant="contained" type="submit" sx={todolistStyles.button}> Save </Button> 
         {/* {todos.length === 3 ? <> </> :
         <TextField
             variant="outlined"
