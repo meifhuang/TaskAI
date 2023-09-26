@@ -112,7 +112,9 @@ const Login: React.FC = () => {
             sx= {loginStyles.loginBox}
             px={8}
             >
-            <Typography variant='h3' m={2}> Login </Typography>
+            <Typography variant='h3' m={1}> Login </Typography>
+            <Typography m={1}> Log in to view dashboard </Typography>
+
             <TextField
             variant="outlined"
             type="text" 
