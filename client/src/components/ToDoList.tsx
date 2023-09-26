@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'; 
-
+import axios from "axios";
 
 
 const todolistStyles = {
@@ -43,15 +43,13 @@ const todolistStyles = {
 }
 
 const fakeTodos: Todo[] = [
-  { id: 1, todo: 'Complete the project', isDone: false},
-  { id: 2, todo: 'Send email to client', isDone: true},
-  { id: 3, todo: 'Prepare for the meeting', isDone: false},
+  { id: 1,  todo: 'Task 1: ', isDone: false},
+  { id: 2, todo: 'Task 2: ', isDone: true},
+  { id: 3,  todo: 'Task 3: ', isDone: false},
 ];
 const ToDoList: React.FC = () => {
 
-
-  const [todos, setTodos] = useState<Todo[]>(fakeTodos); 
-  
+  const [todos, setTodos] = useState<Todo[]>(fakeTodos);  
 //   const handleAdd = (e: React.FormEvent) => {
 //     e.preventDefault()
 //     setTodos((prev) => [...prev, {id: Date.now(), todo: todo, isDone: false, showInput: true}])
@@ -61,10 +59,15 @@ const ToDoList: React.FC = () => {
     setTodos(todos.map((todo) => todo.id === id ? {...todo, isDone: !todo.isDone} : todo ))
   }
 
-  // const handleSubmit = (e: React.FormEvent, id: number) => {
-  //   // setTodos(todos.map((todo) => todo.id == id ? {...todo, todo: data.}))
-  //   e.preventDefault()
-  // }
+  const handleInputChange = (id: number, value: string) => {
+    setTodos(todos.map((todo) => todo.id === id ? {...todo, todo: value} : todo))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log(todos)
+    // setTodos(todos.map((todo) => todo.id == id ? {...todo, todo: data.}))
+  }
 
   return (
     <Box sx={todolistStyles.todo_list} p={5} m={2}>
@@ -73,26 +76,20 @@ const ToDoList: React.FC = () => {
         {/* <Box sx={todolistStyles.add_task} p={1} >
           <AddIcon className="add_icon"/> Add Task
         </Box> */}
-       <Box sx={todolistStyles.todos_box}>
-        {todos.map((todo) => (
-            <ToDoItem todo={todo} toggleTodo={handleToggle} />
-        ))}  
+       <Box 
+        component="form" 
+        noValidate 
+        autoComplete="off" 
+        sx={todolistStyles.todos_box}
+        m={2}
+        p={1}
+        onSubmit={handleSubmit} >
+          {todos.map((todo) => (
+              <ToDoItem todo={todo} toggleTodo={handleToggle} onInputChange={handleInputChange} />
+          ))}  
+        <Button variant="contained" type="submit" sx={todolistStyles.button}> Save </Button>   
       </Box>
-        <Button variant="contained" type="submit" sx={todolistStyles.button}> Save </Button> 
-        {/* {todos.length === 3 ? <> </> :
-        <TextField
-            variant="outlined"
-            type="text" 
-            name="todo"
-            id="todo" 
-            // value={todo}
-            // onChange={handleInputChange}
-            required
-            label="enter todo"
-            fullWidth
-            sx={{py:1}}
-          />
-        } */}
+        
     </Box>
   )
 }

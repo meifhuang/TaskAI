@@ -24,11 +24,11 @@ const containerStyles = {
 
 const App: React.FC = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token')!==null );
 
     const checkUserToken = () => {
         const userToken = localStorage.getItem('token');
-        if (!userToken) {
+        if (!userToken || userToken === null) {
             setIsLoggedIn(false);
         }
         else { 

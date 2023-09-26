@@ -23,26 +23,26 @@ const todoItemStyles = {
 interface Props {
   todo: Todo,
   toggleTodo: (id: number) => void,
+  onInputChange: (id: number,  value:string) => void
 }
 
-const ToDoItem: React.FC<Props> = ({todo, toggleTodo}) => {
+const ToDoItem: React.FC<Props> = ({todo, toggleTodo, onInputChange}) => {
 
     const [inputValue, setInputValue] = useState<string>(todo.todo);
     const [editMode, setEditMode] = useState<boolean>(false);
-
-    const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
-    }
 
     const toggleEditMode = () => {
       setEditMode(!editMode)
     }
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>  {
+      const {value} = e.target
+      setInputValue(value)
+      onInputChange(todo.id,value)
+    }
+
     return (
       <Box 
-        component="form"
-        noValidate
-        autoComplete="off"
         sx={todoItemStyles.box} 
         m={2} 
         p={1} >
@@ -59,7 +59,7 @@ const ToDoItem: React.FC<Props> = ({todo, toggleTodo}) => {
               // label="first name"
               fullWidth
               sx={todoItemStyles.textfield}
-             />
+            />
       </Box>
     )
   }
