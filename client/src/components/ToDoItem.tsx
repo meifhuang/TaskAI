@@ -48,6 +48,7 @@ const ToDoItem: React.FC<Props> = ({todo, toggleTodo, onInputChange}) => {
         m={2} 
         >
         <Checkbox checked={todo.completed} onClick={()=> toggleTodo(todo.id)} /> 
+           {!todo.completed ? 
            <TextField 
               variant='outlined'
               type="text" 
@@ -58,7 +59,9 @@ const ToDoItem: React.FC<Props> = ({todo, toggleTodo, onInputChange}) => {
               // label="first name"
               fullWidth
               sx={todoItemStyles.textfield}
-            />
+            /> :
+            <Typography> {inputValue} </Typography>
+           }
       </Box>
     )
   }

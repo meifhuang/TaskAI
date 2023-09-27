@@ -85,7 +85,7 @@ const VirtualAssistant: React.FC = () => {
 
   return (
     <Box sx={virtualStyles.chatbox}>
-      <Typography variant='h2'> Virtual Assistant </Typography>
+      <Typography variant='h3'> Virtual Assistant </Typography>
       <Typography variant='h6'> Hey there, what can I do for you today? </Typography>
       <Typography> Here are some suggestions</Typography> 
       <Box sx={virtualStyles.command_container}> 

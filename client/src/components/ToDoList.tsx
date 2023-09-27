@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ToDoItem from "./ToDoItem"
 import {Todo} from "../model"
 import AddIcon from '@mui/icons-material/Add';
@@ -24,14 +24,13 @@ const todolistStyles = {
     fontSize: 'large',
   },
   todos_box: {
-    width: '100%',
     height: '90%',
   }, 
   date: {
     backgroundColor: 'rgb(245, 245, 250)',
     display: 'flex', 
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     color: 'rgb(119, 142, 201)',
     margin: '0',
@@ -44,10 +43,11 @@ const todolistStyles = {
   }
 }
 
-const fakeTodos: Todo[] = [];
 const ToDoList: React.FC = () => {
 
-  const [todos, setTodos] = useState<Todo[]>(fakeTodos);  
+  const [todos, setTodos] = useState<Todo[]>([]);  
+  const userId = localStorage.getItem('id'); 
+  
   const date = new Date();
   const dow = date.toLocaleString('default', {weekday: 'long'})
   const month = date.toLocaleString('default', {month: 'short'})
@@ -58,9 +58,30 @@ const ToDoList: React.FC = () => {
 //     e.preventDefault()
 //     setTodos((prev) => [...prev, {id: Date.now(), todo: todo, isDone: false, showInput: true}])
 // }
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/tasks/${userId}`, 
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+        if (response) {
+          setTodos(response.data)
+        }
+      }
+      catch(e) {
+        console.error('Could not fetch tasks:', e);
+      }
+    }
+    if (userId) {
+      fetchTasks()
+    }
+    }, [userId])
 
   const handleToggle = (id: number) => {
-    setTodos(todos.map((todo) => todo.id === id ? {...todo, isDone: !todo.isDone} : todo ))
+    setTodos(todos.map((todo) => todo.id === id ? {...todo, isDone: !todo.completed} : todo ))
   }
 
   const handleInputChange = (id: number, value: string) => {
@@ -68,7 +89,7 @@ const ToDoList: React.FC = () => {
   }
 
   const handleAddTask = () => {
-    setTodos((prev) => [...prev, {id: Date.now(), todo: '', isDone: false}])
+    setTodos((prev) => [...prev, {id: Date.now(), taskName: '', completed: false}])
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -84,9 +105,9 @@ const ToDoList: React.FC = () => {
           <Button sx={todolistStyles.add_task} onClick={handleAddTask}> <AddIcon /> </Button>
         </Box> 
 
-        <Box sx={todolistStyles.date}>
+        {/* <Box sx={todolistStyles.date}>
         <Typography> {dow}, {month} {day} </Typography>
-        </Box>
+        </Box> */}
 
        <Box 
         component="form" 

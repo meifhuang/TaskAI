@@ -48,7 +48,7 @@ export async function login(req: Request, res: Response): Promise<void> {
             return;
         } 
         const token = jwtUtils.generateToken({id: user.id, username: user.username})
-        res.status(200).json({token, user}) 
+        res.status(200).json({token: token, user_id: user.id}) 
     }
     catch (err) {
         console.error('Error during login', err)

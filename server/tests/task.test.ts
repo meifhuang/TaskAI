@@ -1,5 +1,6 @@
 import request from 'supertest';
 import app from '../src/app';
+import * as jwtUtils from '../src/utils/jwt';
 
 describe('Task API', () => {
     let authToken: string;
@@ -8,19 +9,29 @@ describe('Task API', () => {
     const loginResponse = await request(app)
         .post('/login')
         .send({username: 'testuser12345', password: 'testpass12345'});
-    authToken = loginResponse.body.token
-    userId = loginResponse.body.user.id
+        authToken = loginResponse.body.token;
+        userId = loginResponse.body.user.id;
+    })
+    test('should retrieve tasks', async () => {
+        if (!userId) {
+            throw new Error('userId not found');
+        }
+        const response = await request(app)
+            .get(`/tasks/${userId}`)
+            .set('Authorization', `Bearer ${authToken}`);
+
+        expect(response.status).toBe(200);
+        expect(Array.isArray(response.body)).toBe(true);
     })
 
     test('should add a task', async () => {
-        console.log(userId)
-        const taskData = {
+        const taskData = ({
             taskName: 'mop',
             completed: false, 
             userid: userId,
-        }
+        })
         const response = await request(app)
-            .post('/addtask')
+            .post('/task/add')
             .set('Authorization', `Bearer ${authToken}`)
             .send(taskData)
         expect(response.status).toBe(201);
