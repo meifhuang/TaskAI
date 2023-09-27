@@ -45,8 +45,8 @@ export async function login(req: Request, res: Response): Promise<void> {
         const isPasswordValid = await bcrypt.compare(password, user.password) 
         if (!isPasswordValid) {
             res.status(401).json({message: 'Incorrect password'})
+            return;
         } 
-        
         const token = jwtUtils.generateToken({id: user.id, username: user.username})
         res.status(200).json({token, user}) 
     }

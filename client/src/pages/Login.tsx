@@ -87,6 +87,7 @@ const Login: React.FC = () => {
             if (response) {
                 console.log('successfully logged in')
                 localStorage.setItem('token', response.data.token)
+                localStorage.setItem('id', response.data.user.id)
                 console.log(response)
                 navigate('/dashboard')
             }
