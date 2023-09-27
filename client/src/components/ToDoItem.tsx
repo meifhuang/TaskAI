@@ -9,14 +9,13 @@ import TextField from '@mui/material/TextField';
 const todoItemStyles = {
   box: {
     border: '1px solid black',
-    borderRadius: '2px',
+    borderRadius: '3px',
     display: 'flex',
-    alignItems:'center'
+    alignItems:'center',
   }, 
   textfield: {
     backgroundColor: 'white',
-    padding: '8px',
-    margin: '6px'
+    border: 'none',"& fieldset": { border: 'none' }
   }
 }
 
@@ -28,12 +27,7 @@ interface Props {
 
 const ToDoItem: React.FC<Props> = ({todo, toggleTodo, onInputChange}) => {
 
-    const [inputValue, setInputValue] = useState<string>(todo.todo);
-    const [editMode, setEditMode] = useState<boolean>(false);
-
-    const toggleEditMode = () => {
-      setEditMode(!editMode)
-    }
+    const [inputValue, setInputValue] = useState<string>(todo.taskName);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>  {
       const {value} = e.target
@@ -41,20 +35,25 @@ const ToDoItem: React.FC<Props> = ({todo, toggleTodo, onInputChange}) => {
       onInputChange(todo.id,value)
     }
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        console.log('submitting')
+    }
+
     return (
-      <Box 
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={todoItemStyles.box} 
         m={2} 
-        p={1} >
-        <Checkbox checked={todo.isDone} onClick={()=> toggleTodo(todo.id)} /> 
-           <TextField
-              variant='standard'
+        >
+        <Checkbox checked={todo.completed} onClick={()=> toggleTodo(todo.id)} /> 
+           <TextField 
+              variant='outlined'
               type="text" 
               id={`${todo.id}`}
               value={inputValue}
               onChange={handleInputChange}
-              // onSubmit={toggleEditMode}
-              onBlur={toggleEditMode}
               required
               // label="first name"
               fullWidth

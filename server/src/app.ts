@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import {register, login} from "./controller/auth"; 
+import {addTask} from "./controller/task"
 
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 
 app.post('/register', register);
 app.post('/login', login);
+app.post('/addtask', addTask);
 
 
 
