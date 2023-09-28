@@ -11,7 +11,7 @@ import { Typography } from '@mui/material';
 const virtualStyles = {
   chatbox: {
     minWidth: '35em',
-    height: '37em',
+    height: '500px',
     display: 'flex', 
     flexDirection: 'column',
     alignItems: 'center',
@@ -21,6 +21,7 @@ const virtualStyles = {
     boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
   },
   command_container: {
+    height: '100%'
   },
   command_options: {
       border: '1px solid black',
@@ -37,10 +38,17 @@ const virtualStyles = {
   }
 }
 
-const VirtualAssistant: React.FC = () => {
+interface Props {
+  addTodo: (value: string) => void
+  openTaskList: () => void
+  closeTaskList: () => void
+}
 
-  const command_list = ["Add task: ____________", "Mark _________ as done", "Edit task ________ to ________", "Remove ________ from my list"] 
+const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList}) => {
 
+  const command_list = [
+    "Open today's task list / Open to do", 
+    "Add task: ____________"] 
 
   const commands = [
     {
@@ -49,6 +57,33 @@ const VirtualAssistant: React.FC = () => {
         resetTranscript()
         setMessage('you may restate your command')
       } 
+    },
+    {
+      command: ['hello', 'hi', 'hey'],
+      callback: () => setMessage('hello there')
+    },
+    {
+      command: 'stop listening',
+      callback: () => handleStopListening()
+    },
+    {
+      command: ["open today's task list", "open to do"],
+      callback: () => openTaskList()
+    },
+    {
+      command: ["close today's task list", "close to do"],
+      callback: () => closeTaskList()
+    },
+    {
+      command: ['add task *'], 
+      callback: (command:string) => {
+        console.log('hello')
+        console.log(command)
+        addTodo(command)
+        // setTodos((prev) => [...prev, {id: Date.now(), todo: command, isDone: false, showInput: false}])
+        resetTranscript()
+        setTimeout(()=>setMessage('added'),1000)
+      }
     },
   ]
 
@@ -85,7 +120,7 @@ const VirtualAssistant: React.FC = () => {
   }
 
   return (
-    <Box sx={virtualStyles.chatbox}>
+    <Box sx={virtualStyles.chatbox} m={1}>
       <Typography variant='h3'> Virtual Assistant </Typography>
       <Typography variant='h6'> Hey there, what can I do for you today? </Typography>
       <Typography> Here are some suggestions</Typography> 
