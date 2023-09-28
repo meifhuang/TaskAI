@@ -10,14 +10,15 @@ import { Typography } from '@mui/material';
 
 const virtualStyles = {
   chatbox: {
-    width: '30em',
+    minWidth: '35em',
     height: '37em',
     display: 'flex', 
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: '6px',
-    padding: '1.5em'
+    padding: '1.5em',
+    boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
   },
   command_container: {
   },
@@ -38,7 +39,7 @@ const virtualStyles = {
 
 const VirtualAssistant: React.FC = () => {
 
-  const command_list = ["Add ______ to my list", "Mark ______ as done", "Edit task ______ to ______", "Remove ______ from my list"] 
+  const command_list = ["Add task: ____________", "Mark _________ as done", "Edit task ________ to ________", "Remove ________ from my list"] 
 
 
   const commands = [

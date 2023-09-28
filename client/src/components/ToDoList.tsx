@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'; 
+
 import axios from "axios"; 
 
 const todolistStyles = {
@@ -81,42 +82,44 @@ const ToDoList: React.FC = () => {
     }, [userId])
 
   const handleToggle = (id: number) => {
-    setTodos(todos.map((todo) => todo.id === id ? {...todo, isDone: !todo.completed} : todo ))
+    setTodos(todos.map((todo) => todo.id === id ? {...todo, completed: !todo.completed} : todo ))
   }
 
-  const handleInputChange = (id: number, value: string) => {
-    setTodos(todos.map((todo) => todo.id === id ? {...todo, todo: value} : todo))
-  }
+  // const handleInputChange = (id: number, value: string) => {
+  //   console.log(id, value);
+  //   setTodos(todos.map((todo) => todo.id === id ? {...todo, taskName: value} : todo))
+  // }
 
   const handleAddTask = () => {
     setTodos((prev) => [...prev, {id: Date.now(), taskName: '', completed: false}])
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleUpdateTodo = (id: number, updatedTask: string) => {
+    setTodos(todos.map((todo) => todo.id == id ? {... todo, taskName: updatedTask} : todo))
+  }
+
+  const handleSubmit = async (e: React.FormEvent, id:number) => {
     e.preventDefault()
+    setTodos(todos.map((todo) => todo.id == id ? {...todo, taskName: todo.taskName, completed: todo.completed}:todo))
     console.log(todos)
-    // setTodos(todos.map((todo) => todo.id == id ? {...todo, todo: data.}))
   }
 
   return (
-    <Box sx={todolistStyles.todo_list} p={5} m={2}>
+    <Box sx={todolistStyles.todo_list} p={3} m={1}>
         <Box sx={todolistStyles.todo_heading}>
           <Typography variant='h3'> Today </Typography>
           <Button sx={todolistStyles.add_task} onClick={handleAddTask}> <AddIcon /> </Button>
         </Box> 
 
-        {/* <Box sx={todolistStyles.date}>
+        <Box sx={todolistStyles.date}>
         <Typography> {dow}, {month} {day} </Typography>
-        </Box> */}
+        </Box>
 
        <Box 
-        component="form" 
-        noValidate 
-        autoComplete="off" 
         sx={todolistStyles.todos_box}
-        onSubmit={handleSubmit} >
+        >
           {todos.map((todo) => (
-              <ToDoItem todo={todo} toggleTodo={handleToggle} onInputChange={handleInputChange} />
+              <ToDoItem todo={todo} handleToggle={handleToggle} updateTodo={handleUpdateTodo} handleSubmitInput={handleSubmit} />
           ))}  
 
         {/* <Box sx={todolistStyles.add_task} p={1} >
