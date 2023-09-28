@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Background from '../assets/background.jpg'; 
 import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
 
 
 const homeStyles = {
@@ -19,7 +20,7 @@ const Home: React.FC = () => {
 
     return (
       <Container sx={homeStyles.container} maxWidth='xl'>
-          
+          <Button onClick={()=> navigate('/login')}> Login </Button>
       </Container>
     )
   }

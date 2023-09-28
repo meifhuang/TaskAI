@@ -79,6 +79,9 @@ const Login: React.FC = () => {
             const response = await axios({
                 method: 'post',
                 url: 'http://localhost:3000/login',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
                 data: {
                     username: values.username, 
                     password: values.password
@@ -87,6 +90,7 @@ const Login: React.FC = () => {
             if (response) {
                 console.log('successfully logged in')
                 localStorage.setItem('token', response.data.token)
+                localStorage.setItem('id', response.data.user_id)
                 console.log(response)
                 navigate('/dashboard')
             }
@@ -112,7 +116,9 @@ const Login: React.FC = () => {
             sx= {loginStyles.loginBox}
             px={8}
             >
-            <Typography variant='h3' m={2}> Login </Typography>
+            <Typography variant='h3' m={1}> Login </Typography>
+            <Typography m={1}> Log in to view dashboard </Typography>
+
             <TextField
             variant="outlined"
             type="text" 

@@ -1,8 +1,8 @@
-// import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 // import VirtualAssistant from "./components/VirtualAssistant"; 
 // import ToDoList from "./components/ToDoList"; 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import Home from "./pages/Home";
 import Register from "./pages/Register"; 
 import Login from "./pages/Login"; 
@@ -23,6 +23,23 @@ const containerStyles = {
 }
 
 const App: React.FC = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token')!==null );
+
+    const checkUserToken = () => {
+        const userToken = localStorage.getItem('token');
+        if (!userToken || userToken === null) {
+            setIsLoggedIn(false);
+        }
+        else { 
+        setIsLoggedIn(true);
+        }
+    }
+
+    useEffect(() => {
+        checkUserToken();
+    }, [isLoggedIn]);
+
  
     const router = createBrowserRouter([
       {
@@ -37,10 +54,8 @@ const App: React.FC = () => {
         path: "/login",
         element: <Login/>
        },
-       {
-        path: "/dashboard",
-        element: <Dashboard/>
-       }
+       { path: "/dashboard", 
+        element: isLoggedIn ? <Dashboard/> : <Navigate to="/login" />}
     ])
   
     return (

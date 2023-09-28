@@ -43,11 +43,11 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             TaskAI 
           </Typography>
-          {token ? <Button color="inherit" onClick={handleLogout} > Logout </Button> : 
+          {/* {token ? <Button color="inherit" onClick={handleLogout} > Logout </Button> : 
           <div> 
           <Button variant="outlined" color="inherit" onClick={() => navigate("/register")}> Register </Button>
           <Button variant="outlined" color="inherit" onClick={() => navigate("/login")}> Login </Button> 
-          </div> } 
+          </div> }  */}
         </Toolbar>
       </AppBar>
     </Box>
