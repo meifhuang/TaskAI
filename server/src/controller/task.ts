@@ -39,7 +39,8 @@ export async function editTaskCheck(req: Request, res: Response): Promise<void> 
             res.status(404).json({message: 'Task not found'})
             return
         }
-        taskToUpdate.completed = !taskToUpdate.completed
+        const complete = taskToUpdate.completed
+        taskToUpdate.completed = !complete
         await taskToUpdate.save() 
         res.status(200).json({success: true, updatedTask: taskToUpdate})
     }
@@ -50,15 +51,35 @@ export async function editTaskCheck(req: Request, res: Response): Promise<void> 
     }
 }
 
+export async function editTask(req: Request, res: Response): Promise<void> {
+    const taskId: string = req.params.taskid; 
+    const updateValue: string  = req.body.value
+
+    try {
+        const taskToUpdate = await Task.findByPk(taskId)
+        if (!taskToUpdate) { 
+            res.status(404).json({message: 'Task not found'})
+            return
+        }
+        taskToUpdate.taskName = updateValue
+        await taskToUpdate.save() 
+        res.status(200).json({success: true, updatedTask: taskToUpdate.taskName})
+    }
+
+    catch (e: any) {
+        console.error('error', e)
+        res.status(500).json({message: 'Internal server error'})
+    }
+}
 
 export async function deleteTask(req: Request, res: Response): Promise<void> {
     const taskId: string = req.params.taskid; 
-
+    console.log(taskId)
     try {
         const deleted = await Task.destroy({where: {id: taskId}})
         if (deleted) {
             res.status(200).json({
-                success: true
+                success: true,
             })
         }
         else {

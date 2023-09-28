@@ -40,16 +40,25 @@ describe('Task API', () => {
         expect(response.body.userid).toBe(taskData.userid);
      })
 
-     test('should delete a task', async () => {
+     test('should edit a check', async () => {
         const response = await request(app)
-            .put('/task/updatecheck/1')
+            .put('/task/updatecheck/3')
             .set('Authorization', `Bearer ${authToken}`)
+        expect(response.status).toBe(200);
+     })
+
+     test('should edit taskname', async () => {
+        const taskData = {value: 'sweep'}
+        const response = await request(app)
+            .put('/task/update/3')
+            .set('Authorization', `Bearer ${authToken}`)
+            .send(taskData)
         expect(response.status).toBe(200);
      })
 
      test('should delete a task', async () => {
         const response = await request(app)
-            .delete('/task/1')
+            .delete('/task/4')
             .set('Authorization', `Bearer ${authToken}`)
         expect(response.status).toBe(200);
      })

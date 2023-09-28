@@ -47,9 +47,7 @@ const ToDoList: React.FC = () => {
 
   const [todos, setTodos] = useState<Todo[]>([]);  
   const userId = localStorage.getItem('id'); 
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  
   const date = new Date();
   const dow = date.toLocaleString('default', {weekday: 'long'})
   const month = date.toLocaleString('default', {month: 'short'})
@@ -82,15 +80,23 @@ const ToDoList: React.FC = () => {
     }
     }, [userId])
 
-  const handleToggle = (id: number) => {
-
-    setTodos(todos.map((todo) => todo.id === id ? {...todo, completed: !todo.completed} : todo ))
+  const handleToggle = async (id: number) => {
+    try {
+    const response = await axios({
+      method: 'put',
+      url: `http://localhost:3000/task/updatecheck/${id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    })
+    if (response) {
+      setTodos(todos.map((todo) => todo.id === id ? {...todo, completed: !todo.completed} : todo ))
+    }
   }
-
-  // const handleInputChange = (id: number, value: string) => {
-  //   console.log(id, value);
-  //   setTodos(todos.map((todo) => todo.id === id ? {...todo, taskName: value} : todo))
-  // }
+  catch (e) {
+    console.error('Could not update')
+  }
+  }
 
   const addTodo = async () => {
       const task = {taskName: '', completed: false, userid: userId}
@@ -125,7 +131,7 @@ const ToDoList: React.FC = () => {
         }
       })
       if (response) { 
-        setTodos((prev) => prev.filter((todo) => todo.id !== id))
+        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
       }
       else {
         throw Error('error')
@@ -136,9 +142,28 @@ const ToDoList: React.FC = () => {
     }
   }
 
-  const updateTodo = (id: number, updatedTask: string) => {
-    setTodos(todos.map((todo) => todo.id == id ? {... todo, taskName: updatedTask} : todo))
-  }
+  const updateTodo = async (id: number, updatedTask: string) => {
+    try {
+      const response = await axios({
+        method: 'put',
+        url: `http://localhost:3000/task/update/${id}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: {
+          value: updatedTask
+        }
+      })
+      if (response) {
+        console.log(response)
+        let updatedTask = response.data.updatedTask
+        setTodos(todos.map((todo) => todo.id === id ? {...todo, taskName: updatedTask} : todo ))
+      }
+    }
+    catch (e) {
+      console.error('Could not update')
+    }
+    }
 
   return (
     <Box sx={todolistStyles.todo_list} p={3} m={1}>

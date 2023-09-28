@@ -39,7 +39,6 @@ interface Props {
   handleToggle: (id: number) => void,
   updateTodo: (id: number, updatedTaskName: string) => void
   deleteTodo: (id: number) => void
-  handleSubmitInput: (e: React.FormEvent,  id:number) => void
 }
 
 const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo}) => {
@@ -71,7 +70,6 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
 
     return (
       <Box
-        component="form"
         sx={todoItemStyles.box} 
         m={2} 
         >
@@ -84,7 +82,6 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
               value={inputValue}
               onChange={handleInputChange}
               required
-              // label="first name"
               fullWidth
               sx={todoItemStyles.textfield}
             /> :
