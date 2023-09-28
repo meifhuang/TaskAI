@@ -31,5 +31,29 @@ export async function addTask(req: Request, res: Response): Promise<void> {
 }
 
 
+export async function deleteTask(req: Request, res: Response): Promise<void> {
+    const taskId: string = req.params.taskid; 
+    
+    try {
+        const deleted = await Task.destroy({where: {id: taskId}})
+        if (deleted) {
+            res.status(200).json({
+                success: true,
+            })
+        }
+        else {
+            res.status(400).json({
+                success: false, 
+                message: 'something went wrong'
+            })
+        }
+    }
+    catch (e: any) {
+        console.error('error', e)
+        res.status(500).json({message: 'Internal server error'})
+    }
+}
+
+
 
 

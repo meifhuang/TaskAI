@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ToDoItem from "./ToDoItem"
 import {Todo} from "../model"
 import AddIcon from '@mui/icons-material/Add';
@@ -47,6 +47,8 @@ const ToDoList: React.FC = () => {
 
   const [todos, setTodos] = useState<Todo[]>([]);  
   const userId = localStorage.getItem('id'); 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   
   const date = new Date();
   const dow = date.toLocaleString('default', {weekday: 'long'})
@@ -90,7 +92,7 @@ const ToDoList: React.FC = () => {
   // }
 
   const addTask = async () => {
-      const task = {id: Date.now(), taskName: '', completed: false, userid: userId}
+      const task = {taskName: '', completed: false, userid: userId}
       try {
       const response = await axios({
         method: 'post',

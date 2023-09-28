@@ -10,7 +10,7 @@ describe('Task API', () => {
         .post('/login')
         .send({username: 'testuser12345', password: 'testpass12345'});
         authToken = loginResponse.body.token;
-        userId = loginResponse.body.user.id;
+        userId = loginResponse.body.user_id;
     })
     test('should retrieve tasks', async () => {
         if (!userId) {
@@ -38,5 +38,12 @@ describe('Task API', () => {
         expect(response.body.taskName).toBe(taskData.taskName);
         expect(response.body.completed).toBe(taskData.completed);
         expect(response.body.userid).toBe(taskData.userid);
+     })
+
+     test('should delete a task', async () => {
+        const response = await request(app)
+            .delete('/task/4')
+            .set('Authorization', `Bearer ${authToken}`)
+        expect(response.status).toBe(200);
      })
 })
