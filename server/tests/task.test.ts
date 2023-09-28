@@ -42,7 +42,14 @@ describe('Task API', () => {
 
      test('should delete a task', async () => {
         const response = await request(app)
-            .delete('/task/4')
+            .put('/task/updatecheck/1')
+            .set('Authorization', `Bearer ${authToken}`)
+        expect(response.status).toBe(200);
+     })
+
+     test('should delete a task', async () => {
+        const response = await request(app)
+            .delete('/task/1')
             .set('Authorization', `Bearer ${authToken}`)
         expect(response.status).toBe(200);
      })

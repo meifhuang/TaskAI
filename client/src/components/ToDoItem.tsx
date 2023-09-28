@@ -38,17 +38,26 @@ interface Props {
   todo: Todo,
   handleToggle: (id: number) => void,
   updateTodo: (id: number, updatedTaskName: string) => void
+  deleteTodo: (id: number) => void
   handleSubmitInput: (e: React.FormEvent,  id:number) => void
 }
 
-const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, handleSubmitInput}) => {
+const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo}) => {
 
     const [inputValue, setInputValue] = useState<string>(todo.taskName);
     const [editMode, setEditMode] = useState<boolean>(false);
 
+    const handleCheck = () => {
+      handleToggle(todo.id)
+    }
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>  {
       const {value} = e.target
       setInputValue(value)
+    }
+
+    const toggleEditOn = () => {
+      setEditMode(true)
     }
 
     const handleToggleOff = () => {
@@ -56,14 +65,8 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, handleSubmit
       setEditMode(false)
     }
 
-    // const handleSubmit = async (e: React.FormEvent, id: number) => {
-    //     e.preventDefault()
-    //     console.log('submitting')
-    //     setEditMode(false)
-    // }
-
-    const toggleEditOn = () => {
-      setEditMode(true)
+    const handleDeleteTask = () => {
+      deleteTodo(todo.id)
     }
 
     return (
@@ -72,7 +75,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, handleSubmit
         sx={todoItemStyles.box} 
         m={2} 
         >
-          <Checkbox checked={todo.completed} onClick={()=> handleToggle(todo.id)} /> 
+          <Checkbox checked={todo.completed} onClick={handleCheck} /> 
             {editMode ? 
            <TextField 
               variant='standard'
@@ -95,7 +98,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, handleSubmit
                 <CheckIcon sx={todoItemStyles.checkButton}/>
             </Button>
              } 
-            <Button > <ClearIcon sx={todoItemStyles.deleteButton}/> </Button> 
+            <Button onClick={handleDeleteTask}> <ClearIcon sx={todoItemStyles.deleteButton}/> </Button> 
 
       </Box>
     )

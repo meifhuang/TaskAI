@@ -83,6 +83,7 @@ const ToDoList: React.FC = () => {
     }, [userId])
 
   const handleToggle = (id: number) => {
+
     setTodos(todos.map((todo) => todo.id === id ? {...todo, completed: !todo.completed} : todo ))
   }
 
@@ -91,7 +92,7 @@ const ToDoList: React.FC = () => {
   //   setTodos(todos.map((todo) => todo.id === id ? {...todo, taskName: value} : todo))
   // }
 
-  const addTask = async () => {
+  const addTodo = async () => {
       const task = {taskName: '', completed: false, userid: userId}
       try {
       const response = await axios({
@@ -113,23 +114,37 @@ const ToDoList: React.FC = () => {
     catch (e:any) {
       console.error(e.message)
     }
+  }
+  const deleteTodo = async ( id:number ) => {
+    try {
+      const response = await axios({
+        method:'delete',
+        url: `http://localhost:3000/task/${id}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
+      if (response) { 
+        setTodos((prev) => prev.filter((todo) => todo.id !== id))
+      }
+      else {
+        throw Error('error')
+      }
     }
+    catch (e: any) {
+      console.error(e.message)
+    }
+  }
 
   const updateTodo = (id: number, updatedTask: string) => {
     setTodos(todos.map((todo) => todo.id == id ? {... todo, taskName: updatedTask} : todo))
-  }
-
-  const handleSubmit = async (e: React.FormEvent, id:number) => {
-    e.preventDefault()
-    setTodos(todos.map((todo) => todo.id == id ? {...todo, taskName: todo.taskName, completed: todo.completed}:todo))
-    console.log(todos)
   }
 
   return (
     <Box sx={todolistStyles.todo_list} p={3} m={1}>
         <Box sx={todolistStyles.todo_heading}>
           <Typography variant='h3'> Today </Typography>
-          <Button sx={todolistStyles.add_task} onClick={addTask}> <AddIcon /> </Button>
+          <Button sx={todolistStyles.add_task} onClick={addTodo}> <AddIcon /> </Button>
         </Box> 
 
         <Box sx={todolistStyles.date}>
@@ -140,7 +155,7 @@ const ToDoList: React.FC = () => {
         sx={todolistStyles.todos_box}
         >
           {todos.map((todo) => (
-              <ToDoItem todo={todo} handleToggle={handleToggle} updateTodo={updateTodo} handleSubmitInput={handleSubmit} />
+              <ToDoItem todo={todo} handleToggle={handleToggle} updateTodo={updateTodo} deleteTodo={deleteTodo}  />
           ))}  
 
         {/* <Box sx={todolistStyles.add_task} p={1} >

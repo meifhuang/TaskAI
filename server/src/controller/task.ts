@@ -30,15 +30,35 @@ export async function addTask(req: Request, res: Response): Promise<void> {
     }
 }
 
+export async function editTaskCheck(req: Request, res: Response): Promise<void> {
+    const taskId: string = req.params.taskid; 
+
+    try {
+        const taskToUpdate = await Task.findByPk(taskId)
+        if (!taskToUpdate) { 
+            res.status(404).json({message: 'Task not found'})
+            return
+        }
+        taskToUpdate.completed = !taskToUpdate.completed
+        await taskToUpdate.save() 
+        res.status(200).json({success: true, updatedTask: taskToUpdate})
+    }
+
+    catch (e: any) {
+        console.error('error', e)
+        res.status(500).json({message: 'Internal server error'})
+    }
+}
+
 
 export async function deleteTask(req: Request, res: Response): Promise<void> {
     const taskId: string = req.params.taskid; 
-    
+
     try {
         const deleted = await Task.destroy({where: {id: taskId}})
         if (deleted) {
             res.status(200).json({
-                success: true,
+                success: true
             })
         }
         else {
