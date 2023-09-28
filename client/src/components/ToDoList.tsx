@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'; 
-
 import axios from "axios"; 
 
 const todolistStyles = {
@@ -90,11 +89,31 @@ const ToDoList: React.FC = () => {
   //   setTodos(todos.map((todo) => todo.id === id ? {...todo, taskName: value} : todo))
   // }
 
-  const handleAddTask = () => {
-    setTodos((prev) => [...prev, {id: Date.now(), taskName: '', completed: false}])
-  }
+  const addTask = async () => {
+      const task = {id: Date.now(), taskName: '', completed: false, userid: userId}
+      try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/task/add',
+        data: task,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
+      if (response) {
+        const newTask = response.data
+        setTodos((prev) => [...prev, newTask]) 
+      }
+      else {
+        throw Error('error')
+      }
+    }
+    catch (e:any) {
+      console.error(e.message)
+    }
+    }
 
-  const handleUpdateTodo = (id: number, updatedTask: string) => {
+  const updateTodo = (id: number, updatedTask: string) => {
     setTodos(todos.map((todo) => todo.id == id ? {... todo, taskName: updatedTask} : todo))
   }
 
@@ -108,7 +127,7 @@ const ToDoList: React.FC = () => {
     <Box sx={todolistStyles.todo_list} p={3} m={1}>
         <Box sx={todolistStyles.todo_heading}>
           <Typography variant='h3'> Today </Typography>
-          <Button sx={todolistStyles.add_task} onClick={handleAddTask}> <AddIcon /> </Button>
+          <Button sx={todolistStyles.add_task} onClick={addTask}> <AddIcon /> </Button>
         </Box> 
 
         <Box sx={todolistStyles.date}>
@@ -119,7 +138,7 @@ const ToDoList: React.FC = () => {
         sx={todolistStyles.todos_box}
         >
           {todos.map((todo) => (
-              <ToDoItem todo={todo} handleToggle={handleToggle} updateTodo={handleUpdateTodo} handleSubmitInput={handleSubmit} />
+              <ToDoItem todo={todo} handleToggle={handleToggle} updateTodo={updateTodo} handleSubmitInput={handleSubmit} />
           ))}  
 
         {/* <Box sx={todolistStyles.add_task} p={1} >
