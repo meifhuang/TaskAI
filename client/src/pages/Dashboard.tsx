@@ -6,6 +6,7 @@ import Pomodoro from "../components/Pomodoro";
 import Button from '@mui/material/Button';
 import axios from "axios";
 import {Todo} from "../model"
+import music from "../assets/todo.mp3";
 
 
 const dashboardStyles = {
@@ -13,12 +14,20 @@ const dashboardStyles = {
 
 const Dashboard: React.FC = () => {
 
+  const navigate = useNavigate();
+
+  //user
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('id'); 
+
+  const handleLogout = () => {
+    localStorage.clear
+    navigate('/');
+}
+
+  //tasks
   const [todos, setTodos] = useState<Todo[]>([]);  
   const [showTaskList, setShowTaskList] = useState<boolean>(false)
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -130,26 +139,80 @@ const updateTodo = async (id: number, updatedTask: string) => {
   }
 
   const openTaskList = () => {
-    
     setShowTaskList(true)
   }
 
   const closeTaskList = () => {
-   
     setShowTaskList(false)
   }
 
-  const handleLogout = () => {
-        localStorage.clear
-        navigate('/');
+  //clock 
+    const [isRunning, setIsRunning] = useState(false);
+    const [seconds, setSeconds] = useState(2);
+    const [mode, setMode] = React.useState('pomo')
+
+    useEffect(() => {
+        let intervalId: number; 
+
+        if (isRunning && seconds > 0) {
+            intervalId = setInterval(()=> {
+                setSeconds(seconds - 1)
+            }, 1000)
+        }
+        else if (seconds === 0) {
+              setIsRunning(false)
+              playAlarm()
+        }
+        return () => {
+              clearInterval(intervalId);
+          }
+    },[seconds,isRunning])
+
+    const playAlarm = () => {
+        console.log("ALARM")
+        const audio = new Audio(music);
+        audio.loop = true
+        audio.play();
+      };
+
+    const startStopTimer = () => {
+        if (isRunning) {
+          setIsRunning(false)
+        }
+        else {
+          setIsRunning(true)
+        }
+    };
+
+    const handleButtonToggle = (e: React.MouseEvent<HTMLElement> | null,  newValue:string) => {
+        if (newValue !== null) { 
+        setMode(newValue)
+        resetTime(newValue)
+        }
+    };
+    
+    const resetTime = (newMode: string) => {
+        setIsRunning(false)
+        setSeconds(prevSeconds => {
+            if (newMode === 'pomo') {
+              return 25 * 60;
+            } 
+            else if (newMode === 'long') {
+              return 10 * 60;
+            } 
+            else if (newMode === 'short') {
+              return 5 * 60;
+            }
+            return prevSeconds;  
+    })
   }
 
   return (
     <>
       {/* <Sidebar/> */}
       {showTaskList ? <ToDoList todos={todos} addTodo={addTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} handleToggle={handleToggle} /> : <> </>}
-      <Pomodoro/> 
-      <VirtualAssistant addTodo={addTodo} openTaskList={openTaskList} closeTaskList={closeTaskList}/>
+      <Pomodoro isRunning={isRunning} mode={mode} seconds={seconds} startStopTimer={startStopTimer} handleButtonToggle={handleButtonToggle} resetTime={resetTime} /> 
+      <VirtualAssistant handleButtonToggle={handleButtonToggle} mode={mode} resetTime={resetTime} startStopTimer={startStopTimer} addTodo={addTodo} openTaskList={openTaskList} closeTaskList={closeTaskList}/>
       {token ? <Button color="inherit" onClick={handleLogout} > Logout </Button> : <> </> }
     {/* </Box> */}
     </>

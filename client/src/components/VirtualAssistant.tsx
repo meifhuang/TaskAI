@@ -10,11 +10,12 @@ import { Typography } from '@mui/material';
 
 const virtualStyles = {
   chatbox: {
-    minWidth: '35em',
-    height: '500px',
+    minWidth: '450px',
+    minHeight: '500px',
     display: 'flex', 
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: 'white',
     borderRadius: '6px',
     padding: '1.5em',
@@ -42,13 +43,19 @@ interface Props {
   addTodo: (value: string) => void
   openTaskList: () => void
   closeTaskList: () => void
+  mode: string,
+  startStopTimer: () => void
+  resetTime: (newMode: string) => void
+  handleButtonToggle: (e: React.MouseEvent<HTMLElement>|null,  newValue:string) => void
 }
 
-const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList}) => {
+const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList, startStopTimer,resetTime, handleButtonToggle}) => {
 
   const command_list = [
-    "Open today's task list / Open to do", 
-    "Add task: ____________"] 
+    "open today's task list / open to do", 
+    "add task: ____________",
+    "start pomodoro timer / start long break timer",
+    "stop timer"] 
 
   const commands = [
     {
@@ -73,6 +80,22 @@ const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList
     {
       command: ["close today's task list", "close to do"],
       callback: () => closeTaskList()
+    },
+    {
+      command: ["start pomodoro timer",],
+      callback: () => startStopTimer()
+    },
+    {
+      command: ["stop timer"],
+      callback: () => startStopTimer()
+    },
+    {
+      command: ["start long break timer"],
+      callback: () => {
+        console.log('start long break')
+        handleButtonToggle(null, 'long')
+        startStopTimer()
+      }
     },
     {
       command: ['add task *'], 
@@ -120,18 +143,19 @@ const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList
   }
 
   return (
-    <Box sx={virtualStyles.chatbox} m={1}>
-      <Typography variant='h3'> Virtual Assistant </Typography>
+    <Box sx={virtualStyles.chatbox} m={1} p={1}>
+      <Typography variant='h3' p={1}> Virtual Assistant </Typography>
       <Typography variant='h6'> Hey there, what can I do for you today? </Typography>
       <Typography> Here are some suggestions</Typography> 
       <Box sx={virtualStyles.command_container}> 
           {command_list.map((command)=> (
             <Box sx={virtualStyles.command_options}> 
-              <Typography> {command} </Typography>
+              <Typography textAlign='center'> {command} </Typography>
              </Box>
           ))}
       </Box>
-      <Button sx={virtualStyles.microphone_button} onClick={handleMic}> {listening ? <MicIcon/> : <MicOffIcon/>} </Button>
+      <Button sx={virtualStyles.microphone_button} onClick={handleMic}> 
+      {listening ? <MicIcon/> : <MicOffIcon/>} </Button>
       {transcript}
     </Box>
   )
