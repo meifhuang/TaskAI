@@ -16,21 +16,26 @@ const todoItemStyles = {
     borderRadius: '3px',
     display: 'flex',
     alignItems:'center',
-    // justifyContent: 'center',
   }, 
   textfield: {
     backgroundColor: 'white',
     // border: 'none',"& fieldset": { border: 'none' },
-    width: '100%'
+    width: '100%',
+    overflowX: 'scroll',
+    '&::-webkit-scrollbar': {
+      display: 'none',
+  }
   },
   editButton: { 
-    margin: '.4em'
+    margin: '.35em',
   },
   deleteButton: {
-    margin: '.4em'
+    margin: '.35em',
+
   },
   checkButton: {
-    margin: '.4em'
+    margin: '.35em',
+
   }
 }
 
@@ -71,7 +76,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
     return (
       <Box
         sx={todoItemStyles.box} 
-        m={2} 
+        m={2}
         >
           <Checkbox checked={todo.completed} onClick={handleCheck} /> 
             {editMode ? 

@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button'; 
+
 import axios from "axios"; 
 
 const todolistStyles = {
@@ -14,16 +15,21 @@ const todolistStyles = {
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: 'white',
-    borderRadius: '6px',
-    height: '600px', 
-    minWidth: '500px',
-    boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
+    // borderRadius: '6px',
+    border: '1px solid black',
+    height: '30em', 
+    width: '32em',
+    flexShrink: '2'
+    // boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
   },
   add_task: {
     fontSize: 'large',
   },
   todos_box: {
     height: '90%',
+    width: '100%',
+    overflowY: 'auto',
+
   }, 
   date: {
     backgroundColor: 'rgb(245, 245, 250)',
@@ -60,9 +66,9 @@ const ToDoList: React.FC<Props> = ({todos, addTodo, updateTodo, deleteTodo, hand
 
 
   return (
-    <Box sx={todolistStyles.todo_list} p={3} m={2}>
+    <Box sx={todolistStyles.todo_list} p={3} m={1}>
         <Box sx={todolistStyles.todo_heading}>
-          <Typography variant='h3'> Today </Typography>
+          <Typography variant='h4'> Today </Typography>
           <Button sx={todolistStyles.add_task} onClick={()=> addTodo('')}> <AddIcon /> </Button>
         </Box> 
 
@@ -74,7 +80,8 @@ const ToDoList: React.FC<Props> = ({todos, addTodo, updateTodo, deleteTodo, hand
         sx={todolistStyles.todos_box}
         >
           {todos.map((todo) => (
-              <ToDoItem todo={todo} handleToggle={handleToggle} updateTodo={updateTodo} deleteTodo={deleteTodo}  />
+                <ToDoItem todo={todo} handleToggle={handleToggle} updateTodo={updateTodo} deleteTodo={deleteTodo}  />
+      
           ))}  
 
         {/* <Box sx={todolistStyles.add_task} p={1} >

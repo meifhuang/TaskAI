@@ -11,10 +11,11 @@ const pomodoroStyles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        minWidth: '30em',
-        height: '20em',
-        boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
-        backgroundColor: 'white', 
+        width: '30em',
+        height: '15em',
+        // boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
+        backgroundColor: '#81aab1', 
+        // border: '1px solid green'
     },
     options: {
         display: 'flex', 
@@ -35,12 +36,14 @@ interface Props {
     startStopTimer: () => void
     handleButtonToggle: (e: React.MouseEvent<HTMLElement>, newValue: string) => void
     resetTime: (newMode: string) => void
+    handleOpen: () => void,
+    handleClose: () => void
 }
 
-const Pomodoro: React.FC<Props> = ({mode, isRunning, seconds, startStopTimer, handleButtonToggle, resetTime}) => {
+const Pomodoro: React.FC<Props> = ({mode, isRunning, seconds, startStopTimer, handleButtonToggle, resetTime, handleOpen, handleClose}) => {
    
     return (
-        <Box sx={pomodoroStyles.box} m={2} p={2}>
+        <Box sx={pomodoroStyles.box} m={1} p={2}>
             <ToggleButtonGroup exclusive sx={pomodoroStyles.options} value={mode} onChange={handleButtonToggle}> 
                 <ToggleButton value="pomo"> <Typography> pomodoro </Typography> </ToggleButton>
                 <ToggleButton value="long"> <Typography> long break </Typography> </ToggleButton>

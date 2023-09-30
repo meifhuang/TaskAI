@@ -91,7 +91,6 @@ const Login: React.FC = () => {
                 console.log('successfully logged in')
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('id', response.data.user_id)
-                console.log(response)
                 navigate('/dashboard')
             }
             else {

@@ -3,13 +3,48 @@ import { useNavigate } from 'react-router-dom';
 import ToDoList from '../components/ToDoList';
 import VirtualAssistant from '../components/VirtualAssistant';
 import Pomodoro from "../components/Pomodoro";
+import BasicModal from "../components/BasicModal";
 import Button from '@mui/material/Button';
 import axios from "axios";
 import {Todo} from "../model"
 import music from "../assets/todo.mp3";
+import Box from '@mui/material/Box';
+import { Typography } from '@mui/material';
+
 
 
 const dashboardStyles = {
+  box: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    border: '2px solid black'
+  },
+  title: {
+  },
+  dash: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'start',
+    border: '1px solid red',
+    flexShrink: '0'
+  },
+  sidebar: {
+    backgroundColor: 'white', 
+    border: '1px solid blue',
+    height: '95%',
+    boxSizing: 'border-box',
+  },
+  mid: {
+    flexShrink: '1'
+  },
+  right: {
+    flexShrink: '1'
+  }
+ 
 }
 
 const Dashboard: React.FC = () => {
@@ -27,7 +62,7 @@ const Dashboard: React.FC = () => {
 
   //tasks
   const [todos, setTodos] = useState<Todo[]>([]);  
-  const [showTaskList, setShowTaskList] = useState<boolean>(false)
+  const [showTaskList, setShowTaskList] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -147,9 +182,14 @@ const updateTodo = async (id: number, updatedTask: string) => {
   }
 
   //clock 
-    const [isRunning, setIsRunning] = useState(false);
-    const [seconds, setSeconds] = useState(2);
-    const [mode, setMode] = React.useState('pomo')
+  const [isRunning, setIsRunning] = useState(false);
+  const [seconds, setSeconds] = useState(25*60);
+  const [mode, setMode] = useState('pomo');
+
+  //modal + ringer
+  const [open, setOpen] = useState<boolean>(false);
+  const [audioOn, setAudioOn] = useState<boolean>(false);
+  const audio = new Audio(music);
 
     useEffect(() => {
         let intervalId: number; 
@@ -161,19 +201,33 @@ const updateTodo = async (id: number, updatedTask: string) => {
         }
         else if (seconds === 0) {
               setIsRunning(false)
+              handleOpen()
+              setAudioOn(true)
               playAlarm()
         }
         return () => {
-              clearInterval(intervalId);
-          }
+            clearInterval(intervalId);
+        }
     },[seconds,isRunning])
 
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => {
+    setOpen(false);
+    setAudioOn(false)
+    resetTime(mode);
+    audio.pause();
+  }
+
     const playAlarm = () => {
-        console.log("ALARM")
-        const audio = new Audio(music);
-        audio.loop = true
-        audio.play();
-      };
+        if (audioOn) {
+          audio.loop = true
+          audio.play()
+        }
+        else {
+          audio.pause()
+        }
+    };
 
     const startStopTimer = () => {
         if (isRunning) {
@@ -208,14 +262,28 @@ const updateTodo = async (id: number, updatedTask: string) => {
   }
 
   return (
-    <>
-      {/* <Sidebar/> */}
-      {showTaskList ? <ToDoList todos={todos} addTodo={addTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} handleToggle={handleToggle} /> : <> </>}
-      <Pomodoro isRunning={isRunning} mode={mode} seconds={seconds} startStopTimer={startStopTimer} handleButtonToggle={handleButtonToggle} resetTime={resetTime} /> 
-      <VirtualAssistant handleButtonToggle={handleButtonToggle} mode={mode} resetTime={resetTime} startStopTimer={startStopTimer} addTodo={addTodo} openTaskList={openTaskList} closeTaskList={closeTaskList}/>
-      {token ? <Button color="inherit" onClick={handleLogout} > Logout </Button> : <> </> }
-    {/* </Box> */}
-    </>
+    <Box sx={dashboardStyles.box} m={1}>
+       <Box sx={dashboardStyles.title} m={1} p={1}> 
+        <Typography variant="h3"> TaskAI </Typography>
+       </Box> 
+       <Box sx={dashboardStyles.dash}> 
+        <Box sx={dashboardStyles.sidebar} m={1}>
+            <Typography variant="h1"> HELLO </Typography>
+            <Typography variant="h1"> HELLO </Typography>
+            <Typography variant="h1"> HELLO </Typography>
+            <Typography variant="h1"> HELLO </Typography>
+            {token ? <Button color="inherit" onClick={handleLogout} > Logout </Button> : <> </> }
+        </Box>
+      <Box sx={dashboardStyles.mid}> 
+        <BasicModal open={open} handleClose={handleClose} handleOpen={handleOpen}/>
+        {showTaskList ? <ToDoList todos={todos} addTodo={addTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} handleToggle={handleToggle} /> : <> </>}
+      </Box>
+      <Box sx={dashboardStyles.right}> 
+          <Pomodoro isRunning={isRunning} mode={mode} seconds={seconds} startStopTimer={startStopTimer} handleButtonToggle={handleButtonToggle} resetTime={resetTime} handleOpen={handleOpen} handleClose={handleClose} /> 
+          <VirtualAssistant handleButtonToggle={handleButtonToggle} mode={mode} resetTime={resetTime} startStopTimer={startStopTimer} addTodo={addTodo}/>
+        </Box>
+      </Box>
+      </Box>
   )
 }
 

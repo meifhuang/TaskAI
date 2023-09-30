@@ -10,49 +10,47 @@ import { Typography } from '@mui/material';
 
 const virtualStyles = {
   chatbox: {
-    minWidth: '450px',
-    minHeight: '500px',
+    // width: '30em',
+    height: '20em',
     display: 'flex', 
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    borderRadius: '6px',
-    padding: '1.5em',
-    boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
+    border: '1px solid green',
+    flexShrink: '1'
   },
   command_container: {
-    height: '100%'
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   command_options: {
       border: '1px solid black',
       borderRadius: '10px',
-      padding: '1em 2em',
-      margin: '1em'
+      padding: '.5em 1em',
+      margin: '.5em'
   },
   microphone_button: {
     backgroundColor: 'white',
     borderRadius: '50%',
     border: '1px solid gray', 
-    padding: '1.3em',
-    margin: '1em'
+    // padding: '1.3em',
+    // margin: '1em'
   }
 }
 
 interface Props {
   addTodo: (value: string) => void
-  openTaskList: () => void
-  closeTaskList: () => void
   mode: string,
   startStopTimer: () => void
   resetTime: (newMode: string) => void
   handleButtonToggle: (e: React.MouseEvent<HTMLElement>|null,  newValue:string) => void
 }
 
-const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList, startStopTimer,resetTime, handleButtonToggle}) => {
+const VirtualAssistant: React.FC<Props> = ({addTodo, startStopTimer,resetTime, handleButtonToggle}) => {
 
-  const command_list = [
-    "open today's task list / open to do", 
+  const command_list = [ 
     "add task: ____________",
     "start pomodoro timer / start long break timer",
     "stop timer"] 
@@ -72,14 +70,6 @@ const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList
     {
       command: 'stop listening',
       callback: () => handleStopListening()
-    },
-    {
-      command: ["open today's task list", "open to do"],
-      callback: () => openTaskList()
-    },
-    {
-      command: ["close today's task list", "close to do"],
-      callback: () => closeTaskList()
     },
     {
       command: ["start pomodoro timer",],
@@ -144,8 +134,8 @@ const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList
 
   return (
     <Box sx={virtualStyles.chatbox} m={1} p={1}>
-      <Typography variant='h3' p={1}> Virtual Assistant </Typography>
-      <Typography variant='h6'> Hey there, what can I do for you today? </Typography>
+      <Typography variant='h4' p={1}> Virtual Assistant </Typography>
+      <Typography > Hey there, what can I do for you today? </Typography>
       <Typography> Here are some suggestions</Typography> 
       <Box sx={virtualStyles.command_container}> 
           {command_list.map((command)=> (
@@ -153,9 +143,11 @@ const VirtualAssistant: React.FC<Props> = ({addTodo, openTaskList, closeTaskList
               <Typography textAlign='center'> {command} </Typography>
              </Box>
           ))}
+          <Button sx={virtualStyles.microphone_button} onClick={handleMic}> 
+        {listening ? <MicIcon/> : <MicOffIcon/>} 
+          </Button>
       </Box>
-      <Button sx={virtualStyles.microphone_button} onClick={handleMic}> 
-      {listening ? <MicIcon/> : <MicOffIcon/>} </Button>
+      
       {transcript}
     </Box>
   )
