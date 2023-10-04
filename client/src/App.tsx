@@ -13,6 +13,7 @@ import Background from './assets/background.jpg';
 const containerStyles = {
   container: {
   height: '100vh',
+  width: '100vw',
   display: 'flex', 
   justifyContent:'center', 
   alignItems: 'center',
@@ -60,7 +61,7 @@ const App: React.FC = () => {
   
     return (
       <Container sx={containerStyles.container} maxWidth='xl'> 
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
       </Container>
     )
 }

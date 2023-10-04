@@ -2,63 +2,37 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ToDoList from '../components/ToDoList';
 import VirtualAssistant from '../components/VirtualAssistant';
+import Habits from "../components/Habits";
 import Pomodoro from "../components/Pomodoro";
 import BasicModal from "../components/BasicModal";
+import Sidebar from "../components/Sidebar";
 import Button from '@mui/material/Button';
 import axios from "axios";
 import {Todo} from "../model"
 import music from "../assets/todo.mp3";
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
-import { Insights } from '@mui/icons-material';
-import ListIcon from '@mui/icons-material/List';
-import LogoutIcon from '@mui/icons-material/Logout';
-import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
-import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice'; 
 
 
 const dashboardStyles = {
   box: {
     width: '100vw',
+    border: '2px solid blue',
     height: '100vh',
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     display: 'flex',
     flexDirection: 'column',
-    border: '2px solid black'
-  },
-  title: {
-    height: '10%'
+    // border: '2px solid black'
+    margin: 0, 
+    padding: 0,
   },
   dash: {
     display: 'flex',
-    height: '90%',
+    height: '100%'
     // justifyContent: 'space-around',
-    border: '1px solid red',
-    flexShrink: '0'
   },
-  sidebar: {
-    backgroundColor: 'white', 
-    border: '1px solid blue',
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-  },
-  icon: {
-    "& button": {
-      margin: '.2em', 
-      padding: '.8em',
-      border: '1px solid gray',
-      fontSize: 'inherit'
-    },
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    fontSize: 'inherit'
-  },
-  logout: {
-      margin: '.1em',
-      padding: '.1em',
-      fontSize: 'inherit'
+  columnOne: {
+    height: '100%'
   },
 }
 
@@ -69,11 +43,6 @@ const Dashboard: React.FC = () => {
   //user
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('id'); 
-
-  const handleLogout = () => {
-    localStorage.clear
-    navigate('/');
-}
 
   //tasks
   const [todos, setTodos] = useState<Todo[]>([]);  
@@ -267,54 +236,47 @@ const updateTodo = async (id: number, updatedTask: string) => {
             return prevSeconds;  
     })
   }
+  //widget visibility 
+  // const [showTaskList, setShowTaskList] = useState<boolean>(true)
+  // const [showPomo, setPomo] = useState<boolean>(true)
+  // const [showAssistant, setAssistant] = useState<boolean>(true)
+  // const [showHabits, setHabits] = useState<boolean>(true)
 
-  //visbility
-  const [showTaskList, setShowTaskList] = useState<boolean>(true)
-  const [showPomo, setPomo] = useState<boolean>(true)
-  const [showAssistant, setAssistant] = useState<boolean>(true)
-
-  
-  const toggleTaskList = () => {
-    setShowTaskList(prev => !prev)
-  }
-  const togglePomo = () => {
-    setPomo(prev => !prev)
-  }
-  const toggleAssistant = () => {
-    setAssistant(prev => !prev)
+  interface Widgets {
+    [key: string]: boolean;
   }
 
-  // const openTaskList = () => {
-  //   setShowTaskList(true)
-  // }
+  const widgets: Widgets = {
+    'task': true,
+    'timer': true,
+    'assistant': true,
+    'habits': true
+  }
 
-  // const closeTaskList = () => {
-  //   setShowTaskList(false)
-  // }
+  const [showWidget, setShowWidget] = useState(widgets)
+
+  const toggleWidget = (widgetUpdate: string) => {
+    setShowWidget(prevWidget => (
+      {...prevWidget, 
+       [widgetUpdate]: !prevWidget[widgetUpdate] 
+      }))
+  }
 
   return (
-    <Box sx={dashboardStyles.box} m={1}>
-       <Box sx={dashboardStyles.title} p={2}> 
+    <Box sx={dashboardStyles.box}>
+       {/* <Box sx={dashboardStyles.title} p={2}> 
         <Typography variant="h3"> TaskAI </Typography>
-       </Box> 
-       <Box sx={dashboardStyles.dash}> 
-        <Box sx={dashboardStyles.sidebar} m={1}>
-        <Box sx={dashboardStyles.icon}> 
-          <Button onClick={toggleTaskList}> <ListIcon /> </Button>
-          <Button> <Insights/> </Button>
-          <Button onClick={togglePomo} > <AccessAlarmIcon /> </Button>
-          <Button onClick={toggleAssistant}> <KeyboardVoiceIcon /> </Button>
-
-        </Box>
-        <Box sx={dashboardStyles.logout}>
-        {token ? <Button onClick={handleLogout} > <LogoutIcon/> </Button> : <> </>}
-            {/* {token ? <Button color="inherit" onClick={handleLogout} > Logout </Button> : <> </> } */}
-        </Box>
-        </Box>
+       </Box>  */}
+       <Box sx={dashboardStyles.dash} m={1}> 
+       <Sidebar toggleWidget={toggleWidget} />       
         <BasicModal open={open} handleClose={handleClose} handleOpen={handleOpen}/>
-        {showTaskList ? <ToDoList todos={todos} addTodo={addTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} handleToggle={handleToggle} /> : <> </>}
-        {showPomo ? <Pomodoro isRunning={isRunning} mode={mode} seconds={seconds} startStopTimer={startStopTimer} handleButtonToggle={handleButtonToggle} resetTime={resetTime} handleOpen={handleOpen} handleClose={handleClose} /> : <> </>}
-        {showAssistant ?  <VirtualAssistant handleButtonToggle={handleButtonToggle} mode={mode} resetTime={resetTime} startStopTimer={startStopTimer} addTodo={addTodo}/> : <></>} 
+        {showWidget["task"] ? <ToDoList todos={todos} addTodo={addTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} handleToggle={handleToggle} /> : <> </>}
+        <Box sx={dashboardStyles.columnOne}>
+        {showWidget["timer"] ? <Pomodoro isRunning={isRunning} mode={mode} seconds={seconds} startStopTimer={startStopTimer} handleButtonToggle={handleButtonToggle} resetTime={resetTime} handleOpen={handleOpen} handleClose={handleClose} /> : <> </>}
+        {showWidget["habits"] ? <Habits/> : <></>}
+        </Box>
+        {showWidget["assistant"] ?  <VirtualAssistant handleButtonToggle={handleButtonToggle} mode={mode} resetTime={resetTime} startStopTimer={startStopTimer} addTodo={addTodo}/> : <></>}  
+      
       </Box>
       </Box>
   )

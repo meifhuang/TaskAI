@@ -15,10 +15,10 @@ const todolistStyles = {
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: 'white',
-    borderRadius: '6px',
-    border: '2px solid black',
-    height: '30em', 
-    width: '32em',
+    borderRadius: '3px',
+    border: '1px solid black',
+    height: '77%', 
+    minWidth: '25em',
     // boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
   },
   add_task: {
@@ -28,7 +28,6 @@ const todolistStyles = {
     height: '90%',
     width: '100%',
     overflowY: 'auto',
-
   }, 
   date: {
     backgroundColor: 'rgb(245, 245, 250)',
@@ -70,7 +69,6 @@ const ToDoList: React.FC<Props> = ({todos, addTodo, updateTodo, deleteTodo, hand
           <Typography variant='h4'> Today </Typography>
           <Button sx={todolistStyles.add_task} onClick={()=> addTodo('')}> <AddIcon /> </Button>
         </Box> 
-
         <Box sx={todolistStyles.date}>
         <Typography> {dow}, {month} {day} </Typography>
         </Box>

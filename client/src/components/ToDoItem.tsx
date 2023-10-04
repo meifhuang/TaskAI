@@ -13,30 +13,31 @@ import CheckIcon from '@mui/icons-material/Check';
 const todoItemStyles = {
   box: {
     border: '1px solid black',
-    borderRadius: '3px',
+    borderRadius: '4px',
     display: 'flex',
-    alignItems:'center',
+    alignItems:'center'
   }, 
   textfield: {
+    width: '18em',
     backgroundColor: 'white',
     // border: 'none',"& fieldset": { border: 'none' },
-    width: '100%',
     overflowX: 'scroll',
     '&::-webkit-scrollbar': {
       display: 'none',
   }
   },
-  editButton: { 
-    margin: '.35em',
+  buttons: {
+    display: 'flex'
   },
-  deleteButton: {
-    margin: '.35em',
-
+  button: {
+    padding: .3,
+    margin: .1,
+    minHeight: 0,
+    minWidth: 0,
   },
-  checkButton: {
-    margin: '.35em',
-
-  }
+  icon: {
+    fontSize: 'x-large'
+  },
 }
 
 interface Props {
@@ -75,9 +76,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
 
     return (
       <Box
-        sx={todoItemStyles.box} 
-        m={2}
-        >
+        sx={todoItemStyles.box} my={1}>
           <Checkbox checked={todo.completed} onClick={handleCheck} /> 
             {editMode ? 
            <TextField 
@@ -92,16 +91,19 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
             /> :
             <Typography sx={todoItemStyles.textfield}> {inputValue} </Typography>
             }
+            <Box sx={todoItemStyles.buttons} m={1}>
             {!editMode ? 
-            <Button onClick={()=> toggleEditOn()}> 
-                <ModeIcon  sx={todoItemStyles.editButton}/> 
-            </Button> :
-            <Button onClick={handleToggleOff}> 
-                <CheckIcon sx={todoItemStyles.checkButton}/>
-            </Button>
-             } 
-            <Button onClick={handleDeleteTask}> <ClearIcon sx={todoItemStyles.deleteButton}/> </Button> 
-
+              <Button sx={todoItemStyles.button} variant="outlined" size="small" onClick={()=> toggleEditOn()}> 
+                  <ModeIcon sx={todoItemStyles.icon} /> 
+              </Button> :
+              <Button sx={todoItemStyles.button} variant="outlined" size="small" onClick={handleToggleOff}> 
+                  <CheckIcon sx={todoItemStyles.icon} />
+              </Button>
+              } 
+              <Button sx={todoItemStyles.button} variant="outlined" size="small" onClick={handleDeleteTask}> 
+              <ClearIcon sx={todoItemStyles.icon}/> 
+              </Button> 
+            </Box> 
       </Box>
     )
   }

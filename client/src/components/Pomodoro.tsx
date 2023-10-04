@@ -14,7 +14,7 @@ const pomodoroStyles = {
         width: '30em',
         height: '15em',
         // boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
-        backgroundColor: '#81aab1', 
+        backgroundColor: 'white', 
         // border: '1px solid green'
         borderRadius: '3px'
     },
@@ -30,6 +30,8 @@ const pomodoroStyles = {
     }, 
     toggle: {
         width: '140px',
+    },
+    button: {
     }
 }
 
@@ -56,9 +58,9 @@ const Pomodoro: React.FC<Props> = ({mode, isRunning, seconds, startStopTimer, ha
             <Typography variant="h1" textAlign='center'>{Math.floor(seconds/60) === 0 ? '00':Math.floor(seconds/60)}:{`${seconds%60 === 0 ? '00': (seconds%60 < 10 ? `0${seconds%60}`: seconds%60) }`} </Typography>
         <Box sx={pomodoroStyles.start}> 
             {isRunning ? 
-            <Button onClick={startStopTimer} variant="outlined"> Stop </Button> : 
-            <Button onClick={startStopTimer} variant="outlined"> Start </Button> }
-            <Button onClick={()=>resetTime(mode)} variant="outlined"> Reset </Button>
+            <Button sx={pomodoroStyles.button} onClick={startStopTimer} variant="outlined"> Stop </Button> : 
+            <Button sx={pomodoroStyles.button} onClick={startStopTimer} variant="outlined"> Start </Button> }
+            <Button sx={pomodoroStyles.button} onClick={()=>resetTime(mode)} variant="outlined"> Reset </Button>
         </Box>
         </Box>
     )
