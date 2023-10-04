@@ -16,6 +16,7 @@ const pomodoroStyles = {
         // boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
         backgroundColor: '#81aab1', 
         // border: '1px solid green'
+        borderRadius: '3px'
     },
     options: {
         display: 'flex', 
@@ -26,6 +27,9 @@ const pomodoroStyles = {
         display: 'flex', 
         alignItems: 'center',
         justifyContent: 'center'
+    }, 
+    toggle: {
+        width: '140px',
     }
 }
 
@@ -43,11 +47,11 @@ interface Props {
 const Pomodoro: React.FC<Props> = ({mode, isRunning, seconds, startStopTimer, handleButtonToggle, resetTime, handleOpen, handleClose}) => {
    
     return (
-        <Box sx={pomodoroStyles.box} m={1} p={2}>
+        <Box sx={pomodoroStyles.box} m={1} p={1}>
             <ToggleButtonGroup exclusive sx={pomodoroStyles.options} value={mode} onChange={handleButtonToggle}> 
-                <ToggleButton value="pomo"> <Typography> pomodoro </Typography> </ToggleButton>
-                <ToggleButton value="long"> <Typography> long break </Typography> </ToggleButton>
-                <ToggleButton value="short"> <Typography> short break </Typography> </ToggleButton>
+                <ToggleButton sx={pomodoroStyles.toggle} value="pomo"> <Typography > pomodoro </Typography> </ToggleButton>
+                <ToggleButton sx={pomodoroStyles.toggle} value="long"> <Typography > long break </Typography> </ToggleButton>
+                <ToggleButton sx={pomodoroStyles.toggle} value="short"> <Typography > short break </Typography> </ToggleButton>
             </ToggleButtonGroup>
             <Typography variant="h1" textAlign='center'>{Math.floor(seconds/60) === 0 ? '00':Math.floor(seconds/60)}:{`${seconds%60 === 0 ? '00': (seconds%60 < 10 ? `0${seconds%60}`: seconds%60) }`} </Typography>
         <Box sx={pomodoroStyles.start}> 

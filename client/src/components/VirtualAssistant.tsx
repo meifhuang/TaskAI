@@ -10,20 +10,19 @@ import { Typography } from '@mui/material';
 
 const virtualStyles = {
   chatbox: {
-    // width: '30em',
-    height: '20em',
     display: 'flex', 
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: 'white',
     border: '1px solid green',
-    flexShrink: '1'
+    borderRadius: '5px',
+    height: '28em'
   },
   command_container: {
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
+    border: '1px solid black'
   },
   command_options: {
       border: '1px solid black',
@@ -34,9 +33,9 @@ const virtualStyles = {
   microphone_button: {
     backgroundColor: 'white',
     borderRadius: '50%',
+    margin: '1em',
     border: '1px solid gray', 
-    // padding: '1.3em',
-    // margin: '1em'
+    padding: '1em',
   }
 }
 

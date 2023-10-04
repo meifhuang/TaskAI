@@ -15,11 +15,10 @@ const todolistStyles = {
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: 'white',
-    // borderRadius: '6px',
-    border: '1px solid black',
+    borderRadius: '6px',
+    border: '2px solid black',
     height: '30em', 
     width: '32em',
-    flexShrink: '2'
     // boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
   },
   add_task: {

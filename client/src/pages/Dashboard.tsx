@@ -10,41 +10,56 @@ import {Todo} from "../model"
 import music from "../assets/todo.mp3";
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
-
+import { Insights } from '@mui/icons-material';
+import ListIcon from '@mui/icons-material/List';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice'; 
 
 
 const dashboardStyles = {
   box: {
-    width: '100%',
-    height: '100%',
+    width: '100vw',
+    height: '100vh',
     backgroundColor: 'white',
     display: 'flex',
     flexDirection: 'column',
     border: '2px solid black'
   },
   title: {
+    height: '10%'
   },
   dash: {
-    height: '100%',
     display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'start',
+    height: '90%',
+    // justifyContent: 'space-around',
     border: '1px solid red',
     flexShrink: '0'
   },
   sidebar: {
     backgroundColor: 'white', 
     border: '1px solid blue',
-    height: '95%',
-    boxSizing: 'border-box',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
   },
-  mid: {
-    flexShrink: '1'
+  icon: {
+    "& button": {
+      margin: '.2em', 
+      padding: '.8em',
+      border: '1px solid gray',
+      fontSize: 'inherit'
+    },
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    fontSize: 'inherit'
   },
-  right: {
-    flexShrink: '1'
-  }
- 
+  logout: {
+      margin: '.1em',
+      padding: '.1em',
+      fontSize: 'inherit'
+  },
 }
 
 const Dashboard: React.FC = () => {
@@ -62,7 +77,6 @@ const Dashboard: React.FC = () => {
 
   //tasks
   const [todos, setTodos] = useState<Todo[]>([]);  
-  const [showTaskList, setShowTaskList] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -173,13 +187,6 @@ const updateTodo = async (id: number, updatedTask: string) => {
   }
   }
 
-  const openTaskList = () => {
-    setShowTaskList(true)
-  }
-
-  const closeTaskList = () => {
-    setShowTaskList(false)
-  }
 
   //clock 
   const [isRunning, setIsRunning] = useState(false);
@@ -261,27 +268,53 @@ const updateTodo = async (id: number, updatedTask: string) => {
     })
   }
 
+  //visbility
+  const [showTaskList, setShowTaskList] = useState<boolean>(true)
+  const [showPomo, setPomo] = useState<boolean>(true)
+  const [showAssistant, setAssistant] = useState<boolean>(true)
+
+  
+  const toggleTaskList = () => {
+    setShowTaskList(prev => !prev)
+  }
+  const togglePomo = () => {
+    setPomo(prev => !prev)
+  }
+  const toggleAssistant = () => {
+    setAssistant(prev => !prev)
+  }
+
+  // const openTaskList = () => {
+  //   setShowTaskList(true)
+  // }
+
+  // const closeTaskList = () => {
+  //   setShowTaskList(false)
+  // }
+
   return (
     <Box sx={dashboardStyles.box} m={1}>
-       <Box sx={dashboardStyles.title} m={1} p={1}> 
+       <Box sx={dashboardStyles.title} p={2}> 
         <Typography variant="h3"> TaskAI </Typography>
        </Box> 
        <Box sx={dashboardStyles.dash}> 
         <Box sx={dashboardStyles.sidebar} m={1}>
-            <Typography variant="h1"> HELLO </Typography>
-            <Typography variant="h1"> HELLO </Typography>
-            <Typography variant="h1"> HELLO </Typography>
-            <Typography variant="h1"> HELLO </Typography>
-            {token ? <Button color="inherit" onClick={handleLogout} > Logout </Button> : <> </> }
+        <Box sx={dashboardStyles.icon}> 
+          <Button onClick={toggleTaskList}> <ListIcon /> </Button>
+          <Button> <Insights/> </Button>
+          <Button onClick={togglePomo} > <AccessAlarmIcon /> </Button>
+          <Button onClick={toggleAssistant}> <KeyboardVoiceIcon /> </Button>
+
         </Box>
-      <Box sx={dashboardStyles.mid}> 
+        <Box sx={dashboardStyles.logout}>
+        {token ? <Button onClick={handleLogout} > <LogoutIcon/> </Button> : <> </>}
+            {/* {token ? <Button color="inherit" onClick={handleLogout} > Logout </Button> : <> </> } */}
+        </Box>
+        </Box>
         <BasicModal open={open} handleClose={handleClose} handleOpen={handleOpen}/>
         {showTaskList ? <ToDoList todos={todos} addTodo={addTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} handleToggle={handleToggle} /> : <> </>}
-      </Box>
-      <Box sx={dashboardStyles.right}> 
-          <Pomodoro isRunning={isRunning} mode={mode} seconds={seconds} startStopTimer={startStopTimer} handleButtonToggle={handleButtonToggle} resetTime={resetTime} handleOpen={handleOpen} handleClose={handleClose} /> 
-          <VirtualAssistant handleButtonToggle={handleButtonToggle} mode={mode} resetTime={resetTime} startStopTimer={startStopTimer} addTodo={addTodo}/>
-        </Box>
+        {showPomo ? <Pomodoro isRunning={isRunning} mode={mode} seconds={seconds} startStopTimer={startStopTimer} handleButtonToggle={handleButtonToggle} resetTime={resetTime} handleOpen={handleOpen} handleClose={handleClose} /> : <> </>}
+        {showAssistant ?  <VirtualAssistant handleButtonToggle={handleButtonToggle} mode={mode} resetTime={resetTime} startStopTimer={startStopTimer} addTodo={addTodo}/> : <></>} 
       </Box>
       </Box>
   )
