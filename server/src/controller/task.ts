@@ -17,11 +17,11 @@ export async function getTask(req: Request, res: Response): Promise<void> {
 
 
 export async function addTask(req: Request, res: Response): Promise<void> {
-    const {taskName, completed, userid} = req.body; 
+    const {taskName, completed, userid, createdFor} = req.body; 
     // console.log(user.id)
     const userId: number = userid;
     try {
-        const newTask = await Task.create({taskName, completed, userid: userId})
+        const newTask = await Task.create({taskName, completed, userid: userId, createdFor:createdFor})
         res.status(201).json(newTask)
     }
     catch (e: any) {

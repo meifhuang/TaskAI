@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import ToDoItem from "./ToDoItem"
 import {Todo} from "../model"
 import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -23,6 +25,10 @@ const todolistStyles = {
   },
   add_task: {
     fontSize: 'large',
+    margin: 0,
+    padding: 0,
+    minWidth: 0, 
+    minHeight: 0
   },
   todos_box: {
     height: '90%',
@@ -32,7 +38,7 @@ const todolistStyles = {
   date: {
     backgroundColor: 'rgb(245, 245, 250)',
     display: 'flex', 
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     color: 'rgb(119, 142, 201)',
@@ -50,27 +56,32 @@ interface Props {
   addTodo: (value: string) => void
   updateTodo: (id: number, updatedTaskName: string) => void
   deleteTodo: (id: number) => void
-  handleToggle: (id: number) => void,
+  handleToggle: (id: number) => void
+  currentDate: Date
+  getPrevDate: () => void
+  getNextDate: () => void
+
 }
 
+const ToDoList: React.FC<Props> = ({todos, addTodo, updateTodo, deleteTodo, handleToggle, currentDate, getPrevDate, getNextDate}) => {
 
-const ToDoList: React.FC<Props> = ({todos, addTodo, updateTodo, deleteTodo, handleToggle}) => {
-
-  const date = new Date();
-  const dow = date.toLocaleString('default', {weekday: 'long'})
-  const month = date.toLocaleString('default', {month: 'short'})
-  const day = date.getDate()
-  const year = date.getFullYear()
-
+  const displayDate = {
+    dow: currentDate.toLocaleString('default', {weekday: 'long'}),
+    month: currentDate.toLocaleString('default', {month: 'short'}), 
+    day: currentDate.getDate(),
+    year: currentDate.getFullYear(), 
+  }
 
   return (
     <Box sx={todolistStyles.todo_list} p={3} m={1}>
         <Box sx={todolistStyles.todo_heading}>
-          <Typography variant='h4'> Today </Typography>
+          <Typography variant='h4' > Todo List </Typography>
           <Button sx={todolistStyles.add_task} onClick={()=> addTodo('')}> <AddIcon /> </Button>
         </Box> 
         <Box sx={todolistStyles.date}>
-        <Typography> {dow}, {month} {day} </Typography>
+          <Button onClick={()=>getPrevDate()}> <ArrowBackIosIcon/> </Button> 
+          <Typography> {displayDate.dow}, {displayDate.month} {displayDate.day} {displayDate.year}  </Typography>
+          <Button onClick={()=>getNextDate()}> <ArrowForwardIosIcon/> </Button> 
         </Box>
 
        <Box 

@@ -26,7 +26,7 @@ Task.init(
         type: DataTypes.DATE,
         allowNull: false
     },
-    updatedAt: {
+    createdFor: {
         type: DataTypes.DATE,
         allowNull: false
     }

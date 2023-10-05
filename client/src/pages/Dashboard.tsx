@@ -44,6 +44,22 @@ const Dashboard: React.FC = () => {
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('id'); 
 
+   //date 
+   const [currentDate, setCurrentDate] = useState(new Date());
+
+   const getPrevDate = () => {
+     const prevDay = new Date(currentDate)
+     prevDay.setDate(prevDay.getDate()-1)
+     console.log('click', prevDay)
+     setCurrentDate(prevDay)
+   }
+ 
+   const getNextDate = () => {
+     const nextDay = new Date(currentDate)
+     nextDay.setDate(nextDay.getDate()+1)
+     setCurrentDate(nextDay)
+   }
+
   //tasks
   const [todos, setTodos] = useState<Todo[]>([]);  
 
@@ -70,7 +86,7 @@ const Dashboard: React.FC = () => {
     }, [userId])
 
   const addTodo = async (taskname: string) => {
-    const task = {taskName: taskname, completed: false, userid: userId} 
+    const task = {taskName: taskname, completed: false, userid: userId, createdFor: currentDate} 
     try {
     const response = await axios({
       method: 'post',
@@ -103,9 +119,7 @@ const deleteTodo = async ( id:number ) => {
       }
     })
     if (response) { 
-      console.log('Before:', todos);
       setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
-      console.log('After:', todos);
     }
     else {
       throw Error('error')
@@ -156,7 +170,6 @@ const updateTodo = async (id: number, updatedTask: string) => {
   }
   }
 
-
   //clock 
   const [isRunning, setIsRunning] = useState(false);
   const [seconds, setSeconds] = useState(25*60);
@@ -195,52 +208,48 @@ const updateTodo = async (id: number, updatedTask: string) => {
     audio.pause();
   }
 
-    const playAlarm = () => {
-        if (audioOn) {
-          audio.loop = true
-          audio.play()
-        }
-        else {
-          audio.pause()
-        }
-    };
+  const playAlarm = () => {
+      if (audioOn) {
+        audio.loop = true
+        audio.play()
+      }
+      else {
+        audio.pause()
+      }
+  };
 
-    const startStopTimer = () => {
-        if (isRunning) {
-          setIsRunning(false)
-        }
-        else {
-          setIsRunning(true)
-        }
-    };
-
-    const handleButtonToggle = (e: React.MouseEvent<HTMLElement> | null,  newValue:string) => {
-        if (newValue !== null) { 
-        setMode(newValue)
-        resetTime(newValue)
-        }
-    };
-    
-    const resetTime = (newMode: string) => {
+  const startStopTimer = () => {
+      if (isRunning) {
         setIsRunning(false)
-        setSeconds(prevSeconds => {
-            if (newMode === 'pomo') {
-              return 25 * 60;
-            } 
-            else if (newMode === 'long') {
-              return 10 * 60;
-            } 
-            else if (newMode === 'short') {
-              return 5 * 60;
-            }
-            return prevSeconds;  
-    })
-  }
+      }
+      else {
+        setIsRunning(true)
+      }
+  };
+
+  const handleButtonToggle = (e: React.MouseEvent<HTMLElement> | null,  newValue:string) => {
+      if (newValue !== null) { 
+      setMode(newValue)
+      resetTime(newValue)
+      }
+  };
+    
+  const resetTime = (newMode: string) => {
+      setIsRunning(false)
+      setSeconds(prevSeconds => {
+          if (newMode === 'pomo') {
+            return 25 * 60;
+          } 
+          else if (newMode === 'long') {
+            return 10 * 60;
+          } 
+          else if (newMode === 'short') {
+            return 5 * 60;
+          }
+          return prevSeconds;  
+  })
+}
   //widget visibility 
-  // const [showTaskList, setShowTaskList] = useState<boolean>(true)
-  // const [showPomo, setPomo] = useState<boolean>(true)
-  // const [showAssistant, setAssistant] = useState<boolean>(true)
-  // const [showHabits, setHabits] = useState<boolean>(true)
 
   interface Widgets {
     [key: string]: boolean;
@@ -262,6 +271,8 @@ const updateTodo = async (id: number, updatedTask: string) => {
       }))
   }
 
+ 
+
   return (
     <Box sx={dashboardStyles.box}>
        {/* <Box sx={dashboardStyles.title} p={2}> 
@@ -270,7 +281,7 @@ const updateTodo = async (id: number, updatedTask: string) => {
        <Box sx={dashboardStyles.dash} m={1}> 
        <Sidebar toggleWidget={toggleWidget} />       
         <BasicModal open={open} handleClose={handleClose} handleOpen={handleOpen}/>
-        {showWidget["task"] ? <ToDoList todos={todos} addTodo={addTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} handleToggle={handleToggle} /> : <> </>}
+        {showWidget["task"] ? <ToDoList getNextDate={getNextDate} getPrevDate={getPrevDate} currentDate={currentDate} todos={todos} addTodo={addTodo} updateTodo={updateTodo} deleteTodo={deleteTodo} handleToggle={handleToggle} /> : <> </>}
         <Box sx={dashboardStyles.columnOne}>
         {showWidget["timer"] ? <Pomodoro isRunning={isRunning} mode={mode} seconds={seconds} startStopTimer={startStopTimer} handleButtonToggle={handleButtonToggle} resetTime={resetTime} handleOpen={handleOpen} handleClose={handleClose} /> : <> </>}
         {showWidget["habits"] ? <Habits/> : <></>}
