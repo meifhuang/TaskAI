@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ToDoList from '../components/ToDoList';
 import VirtualAssistant from '../components/VirtualAssistant';
@@ -44,49 +44,66 @@ const Dashboard: React.FC = () => {
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('id'); 
 
-   //date 
-   const [currentDate, setCurrentDate] = useState(new Date());
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear()
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); 
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`
+}
+
+ //tasks
+ const [todos, setTodos] = useState<Todo[]>([]);  
+
+
+  const [currentDate, setCurrentDate] = useState(new Date())
+  const [formattedDate, setFormattedDate] = useState(formatDate(currentDate))
+  // const formatDate = `${currentDate.getFullYear()}-${currentDate.getMonth() < 9}-${currentDate.getDate()}`
 
    const getPrevDate = () => {
      const prevDay = new Date(currentDate)
      prevDay.setDate(prevDay.getDate()-1)
-     console.log('click', prevDay)
      setCurrentDate(prevDay)
+     setFormattedDate(formatDate(prevDay)); 
    }
  
+
    const getNextDate = () => {
      const nextDay = new Date(currentDate)
      nextDay.setDate(nextDay.getDate()+1)
      setCurrentDate(nextDay)
+     setFormattedDate(formatDate(nextDay)); 
+
    }
 
-  //tasks
-  const [todos, setTodos] = useState<Todo[]>([]);  
+   useEffect(() => {
+    fetchTasks()
+   },[formattedDate])
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/tasks/${userId}`, 
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        })
-        if (response) {
-          setTodos(response.data)
+
+  const fetchTasks = async () => {
+
+    try {
+      const response = await axios({
+        method: 'get', 
+        url: `http://localhost:3000/tasks/${userId}/${formattedDate}`, 
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
+      });
+      if (response) {
+        let todo = response.data
+        console.log('doublecheck', todo);
+        setTodos(response.data);
       }
-      catch(e) {
-        console.error('Could not fetch tasks:', e);
-      }
+    } catch (e) {
+      console.error('Could not fetch tasks:', e);
     }
-    if (userId) {
-      fetchTasks()
-    }
-    }, [userId])
+  };
+
 
   const addTodo = async (taskname: string) => {
-    const task = {taskName: taskname, completed: false, userid: userId, createdFor: currentDate} 
+
+    const task = {taskName: taskname, completed: false, userid: userId, createdFor: formattedDate} 
     try {
     const response = await axios({
       method: 'post',
@@ -149,6 +166,7 @@ catch (e) {
 }
 
 const updateTodo = async (id: number, updatedTask: string) => {
+
   try {
     const response = await axios({
       method: 'put',

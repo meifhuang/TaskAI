@@ -14,7 +14,7 @@ app.use(cors());
 
 app.post('/register', register);
 app.post('/login', login);
-app.get('/tasks/:userid', getTask);
+app.get('/tasks/:userid/:createdFor', getTask);
 app.post('/task/add', addTask)
 app.put('/task/updatecheck/:taskid', editTaskCheck)
 app.put('/task/update/:taskid', editTask)

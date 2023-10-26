@@ -1,13 +1,17 @@
 import { User, Task } from '../models';
 import {Request, Response} from 'express';
+import { Op, literal } from "sequelize";
 
 
 
 export async function getTask(req: Request, res: Response): Promise<void> {
     try {
         const tasks = await Task.findAll({
-            where: {userid: req.params.userid}});
-        res.status(200).json(tasks)
+            where: {
+                    userid: req.params.userid, 
+                    createdFor: literal(`DATE(createdFor) = '${req.params.createdFor}'`)
+       }})
+    res.status(200).json(tasks)
     }
     catch (e: any) {
         console.log('error', e)
@@ -19,6 +23,7 @@ export async function getTask(req: Request, res: Response): Promise<void> {
 export async function addTask(req: Request, res: Response): Promise<void> {
     const {taskName, completed, userid, createdFor} = req.body; 
     // console.log(user.id)
+    console.log(createdFor)
     const userId: number = userid;
     try {
         const newTask = await Task.create({taskName, completed, userid: userId, createdFor:createdFor})

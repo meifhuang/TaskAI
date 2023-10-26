@@ -88,8 +88,7 @@ const ToDoList: React.FC<Props> = ({todos, addTodo, updateTodo, deleteTodo, hand
         sx={todolistStyles.todos_box}
         >
           {todos.map((todo) => (
-                <ToDoItem todo={todo} handleToggle={handleToggle} updateTodo={updateTodo} deleteTodo={deleteTodo}  />
-      
+                <ToDoItem key={todo.id} todo={todo} handleToggle={handleToggle} updateTodo={updateTodo} deleteTodo={deleteTodo}  />
           ))}  
 
         {/* <Box sx={todolistStyles.add_task} p={1} >
