@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard"; 
 import Container from '@mui/material/Container';
 import Background from './assets/background.jpg'; 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const containerStyles = {
   container: {
@@ -61,7 +63,9 @@ const App: React.FC = () => {
   
     return (
       <Container sx={containerStyles.container} maxWidth='xl'> 
-        <RouterProvider router={router} />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <RouterProvider router={router} />
+      </LocalizationProvider>
       </Container>
     )
 }

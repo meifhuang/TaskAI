@@ -17,7 +17,6 @@ import { Typography } from '@mui/material';
 const dashboardStyles = {
   box: {
     width: '100vw',
-    border: '2px solid blue',
     height: '100vh',
     // backgroundColor: 'white',
     display: 'flex',
@@ -91,8 +90,7 @@ const Dashboard: React.FC = () => {
         }
       });
       if (response) {
-        let todo = response.data
-        console.log('doublecheck', todo);
+
         setTodos(response.data);
       }
     } catch (e) {

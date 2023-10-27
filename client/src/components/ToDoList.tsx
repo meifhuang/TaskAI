@@ -20,7 +20,7 @@ const todolistStyles = {
     borderRadius: '3px',
     border: '1px solid black',
     height: '77%', 
-    minWidth: '25em',
+    minWidth: '28em',
     // boxShadow: '0px 0px 30px 8px rgb(156, 168, 178)',
   },
   add_task: {

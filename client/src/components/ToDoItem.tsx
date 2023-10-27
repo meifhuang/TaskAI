@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import ClearIcon from '@mui/icons-material/Clear';
 import ModeIcon from '@mui/icons-material/Mode';
 import CheckIcon from '@mui/icons-material/Check';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
 const todoItemStyles = {
@@ -15,10 +17,11 @@ const todoItemStyles = {
     border: '1px solid black',
     borderRadius: '4px',
     display: 'flex',
-    alignItems:'center'
+    alignItems:'center',
+    width: '24.5em'
   }, 
   textfield: {
-    width: '18em',
+    width: '11em',
     backgroundColor: 'white',
     // border: 'none',"& fieldset": { border: 'none' },
     overflowX: 'scroll',
@@ -27,7 +30,8 @@ const todoItemStyles = {
   }
   },
   buttons: {
-    display: 'flex'
+    display: 'flex', 
+    margin: 1
   },
   button: {
     padding: .3,
@@ -35,9 +39,26 @@ const todoItemStyles = {
     minHeight: 0,
     minWidth: 0,
   },
-  icon: {
-    fontSize: 'x-large'
-  },
+ date: {
+  color: 'grey',
+  display: 'flex',
+  marginLeft: '1.2em'
+ },
+ editMode: {
+  width: '26.5em',
+  display: 'flex',
+  flexDirection: 'column',
+ },
+ datePicker: {
+  width: '60%',
+  margin: 1,
+  alignSelf: 'end'
+ },
+ displayMode: {
+  display: 'flex', 
+  alignItems: 'center', 
+  justifyContent: 'center'
+ }
 }
 
 interface Props {
@@ -75,35 +96,49 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
     }
 
     return (
-      <Box
-        sx={todoItemStyles.box} my={1}>
-          <Checkbox checked={todo.completed} onClick={handleCheck} /> 
+      <Box sx={todoItemStyles.box} my={1}>
             {editMode ? 
-           <TextField 
-              variant='standard'
-              type="text" 
-              id={`${todo.id}`}
-              value={inputValue}
-              onChange={handleInputChange}
-              required
-              fullWidth
-              sx={todoItemStyles.textfield}
-            /> :
-            <Typography sx={todoItemStyles.textfield}> {inputValue} </Typography>
-            }
-            <Box sx={todoItemStyles.buttons} m={1}>
+           <Box sx={todoItemStyles.editMode} m={1}> 
+            <TextField 
+                variant='standard'
+                type="text" 
+                id={`${todo.id}`}
+                value={inputValue}
+                onChange={handleInputChange}
+                required
+                fullWidth
+                sx={todoItemStyles.textFieldEdit}
+                
+              /> 
+              <DatePicker 
+              sx={todoItemStyles.datePicker} 
+              slotProps={{ textField: { size: 'small' }}}
+              label="due date"
+              />
+            </Box> :
+            
+            <Box sx={todoItemStyles.displayMode} > 
+            <Checkbox checked={todo.completed} onClick={handleCheck} /> 
+              <Typography sx={todoItemStyles.textfield}> {inputValue} </Typography>
+              <Box sx={todoItemStyles.date}> 
+                <CalendarMonthIcon fontSize='small'> </CalendarMonthIcon>
+                <Typography> 10/26/23 </Typography>
+              </Box>
+            </Box>
+            } 
+            <Box sx={todoItemStyles.buttons} >
             {!editMode ? 
               <Button sx={todoItemStyles.button} variant="outlined" size="small" onClick={()=> toggleEditOn()}> 
-                  <ModeIcon sx={todoItemStyles.icon} /> 
+                  <ModeIcon fontSize="small" /> 
               </Button> :
               <Button sx={todoItemStyles.button} variant="outlined" size="small" onClick={handleToggleOff}> 
-                  <CheckIcon sx={todoItemStyles.icon} />
+                  <CheckIcon fontSize="small"  />
               </Button>
               } 
               <Button sx={todoItemStyles.button} variant="outlined" size="small" onClick={handleDeleteTask}> 
-              <ClearIcon sx={todoItemStyles.icon}/> 
+              <ClearIcon fontSize="small"/> 
               </Button> 
-            </Box> 
+            </Box>
       </Box>
     )
   }
