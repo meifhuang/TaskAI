@@ -10,6 +10,7 @@ import ModeIcon from '@mui/icons-material/Mode';
 import CheckIcon from '@mui/icons-material/Check';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs, { Dayjs } from 'dayjs';
 
 
 const todoItemStyles = {
@@ -21,7 +22,7 @@ const todoItemStyles = {
     width: '24.5em'
   }, 
   textfield: {
-    width: '11em',
+    width: '10em',
     backgroundColor: 'white',
     // border: 'none',"& fieldset": { border: 'none' },
     overflowX: 'scroll',
@@ -72,6 +73,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
 
     const [inputValue, setInputValue] = useState<string>(todo.taskName);
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [date, setDate] = useState<Dayjs | null>(dayjs(todo.dateFor))
 
     const handleCheck = () => {
       handleToggle(todo.id)
@@ -114,6 +116,8 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
               sx={todoItemStyles.datePicker} 
               slotProps={{ textField: { size: 'small' }}}
               label="due date"
+              value={date}
+              onChange={(newValue) => setDate(newValue)}
               />
             </Box> :
             
@@ -122,7 +126,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
               <Typography sx={todoItemStyles.textfield}> {inputValue} </Typography>
               <Box sx={todoItemStyles.date}> 
                 <CalendarMonthIcon fontSize='small'> </CalendarMonthIcon>
-                <Typography> 10/26/23 </Typography>
+                <Typography> {date?.format('MM/DD/YYYY')} </Typography>
               </Box>
             </Box>
             } 
