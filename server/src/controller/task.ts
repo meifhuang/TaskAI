@@ -22,11 +22,10 @@ export async function getTask(req: Request, res: Response): Promise<void> {
 
 export async function addTask(req: Request, res: Response): Promise<void> {
     const {taskName, completed, userid, createdFor} = req.body; 
-    // console.log(user.id)
     console.log(createdFor)
     const userId: number = userid;
     try {
-        const newTask = await Task.create({taskName, completed, userid: userId, createdFor:createdFor})
+        const newTask = await Task.create({taskName: 'to do', completed, userid: userId, createdFor:createdFor, dueDate: createdFor})
         res.status(201).json(newTask)
     }
     catch (e: any) {
@@ -58,7 +57,8 @@ export async function editTaskCheck(req: Request, res: Response): Promise<void> 
 
 export async function editTask(req: Request, res: Response): Promise<void> {
     const taskId: string = req.params.taskid; 
-    const updateValue: string  = req.body.value
+    const updateValue: string  = req.body.updatedTask
+    const updateDate: Date = req.body.updatedDate
 
     try {
         const taskToUpdate = await Task.findByPk(taskId)
@@ -67,6 +67,7 @@ export async function editTask(req: Request, res: Response): Promise<void> {
             return
         }
         taskToUpdate.taskName = updateValue
+        taskToUpdate.dueDate = updateDate
         await taskToUpdate.save() 
         res.status(200).json({success: true, updatedTask: taskToUpdate.taskName})
     }

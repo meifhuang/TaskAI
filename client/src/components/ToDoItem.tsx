@@ -11,6 +11,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from 'dayjs';
+import utc from 'dayjs/plugin/utc'; 
+dayjs.extend(utc);
 
 
 const todoItemStyles = {
@@ -65,7 +67,7 @@ const todoItemStyles = {
 interface Props {
   todo: Todo,
   handleToggle: (id: number) => void,
-  updateTodo: (id: number, updatedTaskName: string) => void
+  updateTodo: (id: number, updatedTaskName: string, updatedDueDate: Dayjs) => void
   deleteTodo: (id: number) => void
 }
 
@@ -73,7 +75,9 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
 
     const [inputValue, setInputValue] = useState<string>(todo.taskName);
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [date, setDate] = useState<Dayjs | null>(dayjs(todo.dateFor))
+    const [date, setDate] = useState<Dayjs|null>(dayjs(todo.dueDate))
+
+    console.log('todo', todo)
 
     const handleCheck = () => {
       handleToggle(todo.id)
@@ -89,7 +93,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
     }
 
     const handleToggleOff = () => {
-      updateTodo(todo.id, inputValue)
+      updateTodo(todo.id, inputValue, date)
       setEditMode(false)
     }
 
@@ -116,7 +120,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
               sx={todoItemStyles.datePicker} 
               slotProps={{ textField: { size: 'small' }}}
               label="due date"
-              value={date}
+              // value={date}
               onChange={(newValue) => setDate(newValue)}
               />
             </Box> :
@@ -126,7 +130,7 @@ const ToDoItem: React.FC<Props> = ({todo, handleToggle, updateTodo, deleteTodo})
               <Typography sx={todoItemStyles.textfield}> {inputValue} </Typography>
               <Box sx={todoItemStyles.date}> 
                 <CalendarMonthIcon fontSize='small'> </CalendarMonthIcon>
-                <Typography> {date?.format('MM/DD/YYYY')} </Typography>
+                <Typography> {date?.utc().format('MM/DD/YYYY')} </Typography>
               </Box>
             </Box>
             } 

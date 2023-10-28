@@ -7,6 +7,7 @@ class Task extends Model {
     public completed!: boolean;
     public dateCreated!: Date;
     public updatedAt!: Date; 
+    public dueDate!: Date; 
 }
 Task.init(
     {
@@ -29,6 +30,10 @@ Task.init(
     createdFor: {
         type: DataTypes.DATE,
         allowNull: false
+    },
+    dueDate: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
 }, 
 {

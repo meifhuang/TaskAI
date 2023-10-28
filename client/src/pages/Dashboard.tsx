@@ -71,7 +71,6 @@ const Dashboard: React.FC = () => {
      nextDay.setDate(nextDay.getDate()+1)
      setCurrentDate(nextDay)
      setFormattedDate(formatDate(nextDay)); 
-
    }
 
    useEffect(() => {
@@ -100,8 +99,8 @@ const Dashboard: React.FC = () => {
 
 
   const addTodo = async (taskname: string) => {
-
-    const task = {taskName: taskname, completed: false, userid: userId, createdFor: formattedDate} 
+    console.log(formattedDate)
+    const task = {taskName: taskname, completed: false, userid: userId, createdFor: formattedDate, dueDate: formattedDate} 
     try {
     const response = await axios({
       method: 'post',
@@ -163,7 +162,7 @@ catch (e) {
 }
 }
 
-const updateTodo = async (id: number, updatedTask: string) => {
+const updateTodo = async (id: number, updatedTask: string, updateDueDate: Date) => {
 
   try {
     const response = await axios({
@@ -173,12 +172,17 @@ const updateTodo = async (id: number, updatedTask: string) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       data: {
-        value: updatedTask
+        updatedTask: updatedTask,
+        updatedDate: updateDueDate
+        // dueDate: updateDueDate
       }
     })
     if (response) {
       let updatedTask = response.data.updatedTask
-      setTodos(todos.map((todo) => todo.id === id ? {...todo, taskName: updatedTask} : todo ))
+      let date = response.data.updatedDate
+      console.log('update date to ', date)
+      // let updatedDate = response.data.updateDueDate
+      setTodos(todos.map((todo) => todo.id === id ? {...todo, taskName: updatedTask, dueDate: date} : todo ))
     }
   }
   catch (e) {
